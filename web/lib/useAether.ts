@@ -7,8 +7,8 @@
 // never change.
 // ============================================================
 import { createContext, useContext } from "react";
-import { CORPUS, DESCRIPTIONS, TOTAL_VERSIONS, competitorRate, generate } from "./mockData";
-import { FailureTag, ModelId, Run, Score } from "./schema";
+import { CORPUS, DESCRIPTIONS, PHRASINGS, TOTAL_VERSIONS, competitorRate, generate } from "./mockData";
+import { FailureTag, MODELS, ModelId, Run, Score } from "./schema";
 
 // generated once per load (deterministic) — stands in for the Convex tables
 const DATA: { runs: Run[]; scores: Score[] } = generate();
@@ -65,6 +65,65 @@ export function funnelFor(model: ModelId, version: number) {
     n: cell.length,
   };
 }
+
+// the math behind one cell — every number the gauge shows, as raw counts
+export function mathFor(model: ModelId, version: number) {
+  const cell = runsFor(model, version);
+  const n = cell.length;
+  const used = cell.filter((r) => r.chosenTool === "orangeslice" && r.returnedUsableData).length;
+  const candidacy = cell.filter((r) => r.failureTag !== "not_found").length;
+  const selection = cell.filter((r) => r.chosenTool === "orangeslice").length;
+  const execution = used;
+  const competitor = cell.filter((r) => r.chosenTool === "leadgenius").length;
+  const diy = cell.filter((r) => r.chosenTool === "self").length;
+  return { n, used, candidacy, selection, execution, competitor, diy, rate: n ? used / n : 0 };
+}
+
+// aggregate stats on the wind engine itself
+export function engineStats() {
+  const trainN = PHRASINGS.filter((p) => p.split === "train").length;
+  const testN = PHRASINGS.filter((p) => p.split === "test").length;
+  const totalRuns = DATA.runs.length;
+  const perCell = runsFor("gpt", 1).filter((r) => r.phrasing === PHRASINGS[0].text).length;
+  const taggerCalls = totalRuns; // one labeler call per run
+  const optimizerCalls = TOTAL_VERSIONS - 1; // rewrites between versions
+  return {
+    phrasings: PHRASINGS.length,
+    trainN,
+    testN,
+    perCell,
+    models: MODELS.length,
+    iterations: TOTAL_VERSIONS,
+    totalRuns,
+    taggerCalls,
+    optimizerCalls,
+    agentCalls: totalRuns + taggerCalls + optimizerCalls,
+  };
+}
+
+// which version fixed each rejection reason, and how
+export const TAG_FIX: Record<FailureTag, { version: number; fix: string }> = {
+  not_found: {
+    version: 2,
+    fix: "Published an agent-discoverable API doc and named the exact job agents search for ('high-intent buyers').",
+  },
+  desc_vague: {
+    version: 2,
+    fix: "Added a callable endpoint + JSON schema so the agent can tell what it does and how to call it.",
+  },
+  i_can_do_this_myself: {
+    version: 3,
+    fix: "Reframed around the full outcome ('find + start outreach'), so doing it by hand looks slower.",
+  },
+  auth_friction: {
+    version: 3,
+    fix: "Surfaced the zero-setup API key and a copy-paste example so the call doesn't 401.",
+  },
+  picked_competitor: {
+    version: 3,
+    fix: "Sharpened positioning vs lead-scrapers: intent scoring + drafted outreach, not just a list.",
+  },
+};
 
 // ---------- the studio (shared UI state) ----------
 type ModelSel = ModelId;

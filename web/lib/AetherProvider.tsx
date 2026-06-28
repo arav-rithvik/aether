@@ -43,11 +43,12 @@ export function AetherProvider({ children }: { children: React.ReactNode }) {
     };
   }, [playing, version]);
 
-  // live feed: stream the selected cell's runs in, newest first
+  // live feed: seed a few immediately (never blank), then stream the rest in
   useEffect(() => {
     const cell = runsFor(model, version);
-    setFeed([]);
-    let i = 0;
+    const SEED = 9;
+    setFeed(cell.slice(0, SEED).reverse());
+    let i = SEED;
     const id = setInterval(() => {
       if (i >= cell.length) {
         clearInterval(id);

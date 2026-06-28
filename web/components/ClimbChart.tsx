@@ -34,7 +34,7 @@ export function ClimbChart() {
   return (
     <div className="flex h-full flex-col">
       <p className="font-sans text-[13px] text-[var(--color-ink-2)]">
-        Same job, same held-out phrasings. Only OrangeSlice&apos;s footprint changed —{" "}
+        Same job, same held-out phrasings. Only your footprint changed —{" "}
         <span className="text-[var(--color-ink)]">usage climbs on both models; the competitor stays flat as a control.</span>
       </p>
 

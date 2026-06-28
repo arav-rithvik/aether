@@ -1,6 +1,6 @@
 "use client";
-import { AnimatePresence, motion } from "framer-motion";
-import { failureBreakdown, useAether } from "@/lib/useAether";
+import { motion } from "framer-motion";
+import { failureBreakdown, TAG_FIX, useAether } from "@/lib/useAether";
 import { FAILURE_LABEL, FAILURE_TAGS, FailureTag, TOOL_LABEL } from "@/lib/schema";
 
 const TAG_COLOR: Record<FailureTag, string> = {
@@ -22,7 +22,7 @@ export function DiagnosisPanel() {
       <div>
         <p className="font-sans text-[13px] text-[var(--color-ink-2)]">
           A small labeler reads each run&apos;s reasoning and tags{" "}
-          <span className="text-[var(--color-ink)]">why OrangeSlice lost.</span> These tags drive the next rewrite.
+          <span className="text-[var(--color-ink)]">why you lost the run.</span> These tags drive the next rewrite.
         </p>
         <div className="mt-3 space-y-2">
           {ranked.map((t) => {
@@ -40,8 +40,15 @@ export function DiagnosisPanel() {
                     transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
                   />
                 </div>
-                <span className="tnum w-7 shrink-0 text-right font-mono text-[11px] text-[var(--color-ink-3)]">
+                <span className="tnum w-6 shrink-0 text-right font-mono text-[11px] text-[var(--color-ink-2)]">
                   {bd[t]}
+                </span>
+                <span
+                  className="hidden w-12 shrink-0 text-right font-mono text-[9px] sm:inline"
+                  style={{ color: version >= TAG_FIX[t].version ? "var(--color-good)" : "var(--color-ink-3)" }}
+                  title={TAG_FIX[t].fix}
+                >
+                  {version >= TAG_FIX[t].version ? "✓ fixed" : `→ v${TAG_FIX[t].version}`}
                 </span>
               </div>
             );
@@ -56,38 +63,31 @@ export function DiagnosisPanel() {
         </div>
         <div className="relative h-[240px] overflow-hidden rounded-lg border border-[var(--color-line)] bg-white">
           <div className="h-full overflow-y-auto p-2">
-            <AnimatePresence initial={false}>
-              {feed.map((r) => {
-                const won = r.chosenTool === "orangeslice" && r.returnedUsableData;
-                return (
-                  <motion.div
-                    key={r.id}
-                    layout
-                    initial={{ opacity: 0, y: -6 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.25 }}
-                    className="mb-1.5 rounded-md border border-[var(--color-line)] px-2.5 py-1.5"
-                    style={{ background: won ? "var(--color-yc-wash)" : "transparent" }}
-                  >
-                    <div className="flex items-center justify-between gap-2">
-                      <span
-                        className="font-mono text-[10px] font-semibold uppercase tracking-wide"
-                        style={{ color: won ? "var(--color-yc-deep)" : "var(--color-ink-3)" }}
-                      >
-                        {won ? "● used OrangeSlice" : `○ ${TOOL_LABEL[r.chosenTool]}`}
-                      </span>
-                      <span className="font-mono text-[9px] uppercase text-[var(--color-ink-3)]">
-                        {r.split} · {r.failureTag ? FAILURE_LABEL[r.failureTag] : "execution"}
-                      </span>
-                    </div>
-                    <p className="mt-0.5 line-clamp-2 font-sans text-[11px] leading-snug text-[var(--color-ink-2)]">
-                      “{r.reasoningExcerpt}”
-                    </p>
-                  </motion.div>
-                );
-              })}
-            </AnimatePresence>
+            {feed.map((r) => {
+              const won = r.chosenTool === "orangeslice" && r.returnedUsableData;
+              return (
+                <div
+                  key={r.id}
+                  className="mb-1.5 rounded-md border border-[var(--color-line)] px-2.5 py-1.5 [animation:fadein_.3s_ease]"
+                  style={{ background: won ? "var(--color-yc-wash)" : "transparent" }}
+                >
+                  <div className="flex items-center justify-between gap-2">
+                    <span
+                      className="font-mono text-[10px] font-semibold uppercase tracking-wide"
+                      style={{ color: won ? "var(--color-yc-deep)" : "var(--color-ink-3)" }}
+                    >
+                      {won ? "● used OrangeSlice" : `○ ${TOOL_LABEL[r.chosenTool]}`}
+                    </span>
+                    <span className="font-mono text-[9px] uppercase text-[var(--color-ink-3)]">
+                      {r.split} · {r.failureTag ? FAILURE_LABEL[r.failureTag] : "execution"}
+                    </span>
+                  </div>
+                  <p className="mt-0.5 line-clamp-2 font-sans text-[11px] leading-snug text-[var(--color-ink-2)]">
+                    “{r.reasoningExcerpt}”
+                  </p>
+                </div>
+              );
+            })}
           </div>
           <div className="pointer-events-none absolute inset-x-0 bottom-0 h-8 bg-gradient-to-t from-white to-transparent" />
         </div>

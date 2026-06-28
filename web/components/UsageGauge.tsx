@@ -1,5 +1,5 @@
 "use client";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { animate, useMotionValue, useTransform, motion } from "framer-motion";
 import { scoreOf } from "@/lib/useAether";
 import { useAether } from "@/lib/useAether";
@@ -44,13 +44,16 @@ export function UsageGauge() {
   const other: ModelId = model === "gpt" ? "claude" : "gpt";
   const otherRate = scoreOf(other, version).usageRate;
 
-  // animated big number
-  const num = useMotionValue(0);
+  // animated big number — plain state span (no motion.span, which rendered gray)
+  const [disp, setDisp] = useState(0);
   useEffect(() => {
-    const c = animate(num, rate * 100, { duration: 1.1, ease: [0.22, 1, 0.36, 1] });
+    const c = animate(0, rate * 100, {
+      duration: 1.1,
+      ease: [0.22, 1, 0.36, 1],
+      onUpdate: (v) => setDisp(Math.round(v)),
+    });
     return c.stop;
-  }, [rate, num]);
-  const pct = useTransform(num, (n) => Math.round(n).toString());
+  }, [rate]);
 
   return (
     <div className="flex flex-col items-center">
@@ -97,12 +100,15 @@ export function UsageGauge() {
 
         <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center">
           <div className="flex items-start">
-            <motion.span className="tnum font-display text-[84px] font-semibold leading-none text-[var(--color-ink)]">
-              {pct}
-            </motion.span>
-            <span className="mt-3 font-display text-3xl font-medium text-[var(--color-yc)]">%</span>
+            <span
+              className="tnum font-display text-[84px] font-bold leading-none"
+              style={{ color: "#14110D" }}
+            >
+              {disp}
+            </span>
+            <span className="mt-3 font-display text-3xl font-bold text-[var(--color-yc)]">%</span>
           </div>
-          <span className="eyebrow mt-1">of agents used OrangeSlice</span>
+          <span className="eyebrow mt-1.5 !text-[var(--color-ink-2)]">of agents used OrangeSlice</span>
         </div>
       </div>
 
