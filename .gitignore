@@ -5,3 +5,6 @@ node_modules/
 dist/
 .next/
 convex/_generated/
+.claude/
+.agents/
+skills-lock.json

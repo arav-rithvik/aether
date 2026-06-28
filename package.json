@@ -1,6 +1,10 @@
 {
   "name": "aether",
   "private": true,
+  "type": "module",
   "description": "Agent Awareness Optimization — make agents discover + use a product.",
-  "workspaces": ["engine", "web"]
+  "workspaces": ["engine", "web"],
+  "dependencies": {
+    "convex": "^1.17.0"
+  }
 }

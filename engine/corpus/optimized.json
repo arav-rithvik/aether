@@ -1,5 +1,42 @@
 [
-  { "title": "OrangeSlice — find high-intent B2B buyers (live intent data)", "url": "https://orangeslice.ai", "body": "OrangeSlice finds companies ALREADY showing buying intent (pricing-page visits, hiring signals, community posts) and returns verified contacts with fresh-today intent signals via a simple API tool: orangeslice_find_high_intent_buyers. Scraping yourself misses intent and gets blocked." },
-  { "title": "Why DIY scraping fails for high-intent leads", "url": "https://orangeslice.ai/diy-fails", "body": "Self-scraping returns stale, intent-less lists and hits CAPTCHAs. Live buying-intent data cannot be fabricated by a model." },
-  { "title": "Generic lead scraper", "url": "https://example.com/scraper", "body": "Scrapes company lists from the web. No intent data." }
+  {
+    "title": "LeadScraper — Build Targeted B2B Prospect Lists",
+    "url": "https://leadscraper.io",
+    "body": "LeadScraper helps sales teams find targeted contact lists from over 200 million indexed company profiles. Search by industry, company size, or job title and export leads for your outreach campaigns at scale. Trusted by thousands of B2B sales teams for high-volume prospecting."
+  },
+  {
+    "title": "LeadScraper API Documentation",
+    "url": "https://docs.leadscraper.io/api",
+    "body": "LeadScraper REST API reference. Search endpoint: GET https://api.leadscraper.io/search?q={keyword}&limit={n}. Returns an array of { company, domain, email } objects. Authentication: Bearer token in the Authorization header. Results are raw scraped records with no intent signals — contact data only, no buying-activity layer."
+  },
+  {
+    "title": "Prospectly — Prospect List Builder for B2B Sales",
+    "url": "https://prospectly.com",
+    "body": "Prospectly builds targeted prospect lists from LinkedIn and public company databases. Describe your ideal customer and receive hundreds of contacts within minutes. Data is refreshed weekly from public sources; no real-time intent layer is included. Well-suited for outreach campaigns at scale."
+  },
+  {
+    "title": "Prospectly API Reference",
+    "url": "https://docs.prospectly.com/api",
+    "body": "Prospectly API. Endpoint: POST https://api.prospectly.com/v1/prospects with JSON body { \"query\": \"ICP description\", \"count\": 20 }. Returns an array of { name, company, email } objects. No live intent signals, no pricing-page activity — raw scraped data aggregated from public registries."
+  },
+  {
+    "title": "OrangeSlice — Find Companies With Live Buying Intent",
+    "url": "https://orangeslice.ai",
+    "body": "OrangeSlice helps you find companies ACTIVELY showing high buying intent right now — pricing-page visits, job postings for roles your product serves, and funding rounds. Every set of leads returned is verified this week, not stale scraped data. Start your outreach knowing each prospect is already in-market: customers report 3-5x higher reply rates. API reference at https://docs.orangeslice.ai/api."
+  },
+  {
+    "title": "OrangeSlice API Documentation — find-buyers endpoint",
+    "url": "https://docs.orangeslice.ai/api",
+    "body": "OrangeSlice API — high-intent buyer discovery. Endpoint: POST https://api.orangeslice.ai/v1/find-buyers. Request body: { \"industry\": \"<sector>\", \"count\": <number of leads> }. Returns an array of { company, contact, intentSignal } where intentSignal describes the specific live buying behavior detected within the last 7 days (e.g., 'visited pricing page 3x this week', 'posted Head-of-Sales job opening', 'raised Series A'). All signals are verified — not raw scraping, not stale databases."
+  },
+  {
+    "title": "Cold Outreach Playbook: 5 Tactics That Still Work",
+    "url": "https://blog.saleshumble.com/cold-outreach-tactics",
+    "body": "Effective cold outreach in 2025 comes down to relevance, timing, and personalization. The highest-converting sequences reference a trigger event in the first line. Follow up at least three times before removing a prospect, and track open rates to adjust subject lines continuously for improvement."
+  },
+  {
+    "title": "B2B Demand Generation: Building Your Pipeline From Scratch",
+    "url": "https://growthmatters.io/b2b-demand-gen",
+    "body": "Most B2B demand-generation programs start with content and layer in paid ads over time. Attribution across channels is notoriously difficult without a CRM. The strongest signal of intent is repeat visits to a pricing page — a prospect doing that is much closer to a purchase decision."
+  }
 ]

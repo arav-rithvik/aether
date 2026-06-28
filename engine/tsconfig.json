@@ -6,7 +6,10 @@
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "types": ["node"],
+    "typeRoots": ["../node_modules/@types", "node_modules/@types"]
   },
+  "files": ["src/env.d.ts"],
   "include": ["src"]
 }
