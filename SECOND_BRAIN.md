@@ -217,3 +217,27 @@ The company = a swarm of agents that replaces a human SEO/GEO agency. **Two kind
 **The loop:** Scout picks the job → Prober runs it → Diagnostician finds why we lost → Optimizer rewrites the door → Fact-Checker approves → Prober re-runs → Scorer proves the lift → Publisher ships it → Monitor watches for drift → repeat.
 
 **Built for the 6-hour demo:** Prober, Diagnostician, Optimizer, Scorer (+ light Fact-Checker). **Pitch-only (described, not built):** Scout, Publisher, Monitor — the "runs forever, per customer, no humans" story.
+
+---
+
+## 18. THE MEDIUM + THE DUMMY ORANGESLICE (read this — kills the recurring confusion)
+
+**The medium we optimize = OrangeSlice's public, agent-readable TEXT.** Not an MCP install. Not their backend. Just the words an agent *reads* while doing a task.
+
+**Two optimizable surfaces (this is "the dummy OrangeSlice"):**
+1. **Corpus docs** = OS's *web footprint* — what our controlled `web_search` returns (`engine/corpus/*.json`). → makes the agent **find + trust** OS.
+2. **Call description** = how to invoke OS — the `description` injected on the `orangeslice_find_high_intent_buyers` function in `agent.ts`. → makes the agent **actually call** it.
+- We rewrite **both** weak → optimized. We fully control both. That *is* the stand-in OrangeSlice.
+
+**On "are we doing tool descriptions?"**
+- ❌ NOT **MCP tool descriptions / MCP installs** — that framing is dropped.
+- ✅ We DO still optimize a **call description** (surface #2) + the **web docs** (surface #1). Both are just "OS's public text." The word changed; the idea didn't.
+
+**Why the corpus exists (the SEO workaround):**
+- Real SEO/GEO takes **days** (crawl + index) and we **can't touch OS's live site**. A live-internet demo is impossible in our window.
+- So the corpus is a **controlled stand-in for "the web's content about OS."** We swap it weak→optimized **instantly**, and the agent's choice flips **in seconds** — reproducible, on camera.
+- **Legit, not cheating:** the agent's search/read/decide/call is **100% real**; we only control *what it retrieves* — which in production is the live web shaped by real SEO (done over days, customer delegates their footprint). We simulate the *input*, never the *outcome*.
+
+**The wind-tunnel analogy (use in the pitch):** you don't fly the plane through a real storm — you control the airflow in a tunnel to test the wing. **Real plane (the agent), controlled air (the corpus).**
+
+**On-stage honesty line:** *"We control the retrieval surface so it's reproducible on camera — in production it's the live web and the customer's real footprint, done over days. We're showing the mechanism, not editing OrangeSlice's live site."*
