@@ -23,7 +23,7 @@ export default function Page() {
         <div className="mx-auto flex max-w-[1240px] items-center justify-center gap-2 px-6 py-1.5 text-center font-sans text-[12.5px] text-[var(--color-ink-2)]">
           <span className="h-1.5 w-1.5 rounded-full bg-[var(--color-yc)]" />
           On the tracked job, agents now pick OrangeSlice{" "}
-          <span className="font-semibold text-[var(--color-ink)]">71%</span> of the time — up from 8%
+          <span className="font-semibold text-[var(--color-ink)]">71%</span> of the time, up from 8%
           <span className="text-[var(--color-yc-deep)]">→</span>
         </div>
       </div>
@@ -47,8 +47,8 @@ export default function Page() {
             </h2>
             <p className="mt-3 max-w-[520px] font-sans text-[15px] leading-relaxed text-[var(--color-ink-2)]">
               Usage rate is the share of agent runs that pick <em>and</em> call OrangeSlice for the
-              job — measured on held-out phrasings, on two models, with a competitor held flat as a
-              control. Hit <span className="font-medium text-[var(--color-ink)]">Run wind tunnel</span>{" "}
+              job. It is measured on held-out phrasings, on two models, with a competitor held flat
+              as a control. Hit <span className="font-medium text-[var(--color-ink)]">Run test</span>{" "}
               and watch it climb as the footprint is rewritten.
             </p>
           </div>

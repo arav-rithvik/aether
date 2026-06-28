@@ -18,7 +18,7 @@ export function MathPanel() {
     <div className="flex flex-col gap-4">
       {/* the headline formula, with real counts */}
       <div className="rounded-lg border border-[var(--color-line)] bg-[var(--color-panel)] p-3.5">
-        <div className="eyebrow">Usage rate — the math</div>
+        <div className="eyebrow">How the rate is computed</div>
         <div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 font-mono text-[13px]">
           <span className="text-[var(--color-ink-2)]">usage rate</span>
           <span className="text-[var(--color-ink-3)]">=</span>

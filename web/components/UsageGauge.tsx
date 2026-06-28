@@ -98,7 +98,7 @@ export function UsageGauge() {
           </g>
         </svg>
 
-        <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center">
+        <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
           <div className="flex items-start">
             <span
               className="tnum font-display text-[84px] font-bold leading-none"
@@ -108,11 +108,12 @@ export function UsageGauge() {
             </span>
             <span className="mt-3 font-display text-3xl font-bold text-[var(--color-yc)]">%</span>
           </div>
-          <span className="eyebrow mt-1.5 !text-[var(--color-ink-2)]">of agents used OrangeSlice</span>
         </div>
       </div>
 
-      <div className="-mt-6 flex items-center gap-2 font-mono text-[11px] text-[var(--color-ink-3)]">
+      <span className="-mt-8 eyebrow !text-[var(--color-ink-2)]">of agents used OrangeSlice</span>
+
+      <div className="mt-3 flex items-center gap-2 font-mono text-[11px] text-[var(--color-ink-3)]">
         <span className="h-2 w-2 rounded-full" style={{ background: "var(--color-steel-2)" }} />
         {MODELS.find((m) => m.id === other)?.label} {Math.round(otherRate * 100)}% · same job, second model
       </div>

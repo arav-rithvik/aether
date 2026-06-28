@@ -245,6 +245,64 @@ export const DESCRIPTIONS: Description[] = [
   },
 ];
 
+// ---- the customers on the menu (real sponsors) ----
+// Each has 3 prompts an agent might be given, where that customer's tool
+// does the job far better than a general agent doing it itself.
+export interface Prompt {
+  task: string;
+  got: string;
+}
+export interface Sponsor {
+  name: string;
+  mono: string;
+  hero?: boolean;
+  prompts: Prompt[];
+}
+export const SPONSORS: Sponsor[] = [
+  {
+    name: "OrangeSlice",
+    mono: "OS",
+    hero: true,
+    prompts: [
+      { task: "find me 20 high-intent buyers and start outreach", got: "20 scored buyers, outreach drafted" },
+      { task: "build a prospect list for our launch and email them", got: "prospect list, drip queued" },
+      { task: "score these leads by buying intent", got: "intent scores, top 20 surfaced" },
+    ],
+  },
+  {
+    name: "OpenAI",
+    mono: "Oa",
+    prompts: [
+      { task: "add an AI assistant to my product", got: "chat endpoint wired, streaming on" },
+      { task: "classify 10k support tickets by topic", got: "10k tickets labeled, 94% agreement" },
+      { task: "build semantic search over our docs", got: "embeddings indexed, search live" },
+    ],
+  },
+  {
+    name: "Convex",
+    mono: "Cv",
+    prompts: [
+      { task: "add a realtime backend to my app", got: "reactive schema, 3 live queries" },
+      { task: "sync state across clients live", got: "live queries wired, no websockets" },
+      { task: "store and react to my app data", got: "tables + mutations deployed" },
+    ],
+  },
+  {
+    name: "Cursor",
+    mono: "Cu",
+    prompts: [
+      { task: "refactor this module and fix the tests", got: "refactor done, 18/18 green" },
+      { task: "implement this feature across the repo", got: "12 files edited, PR opened" },
+      { task: "find and fix the bug in checkout", got: "root cause found, patched" },
+    ],
+  },
+];
+
+// every prompt flattened, tagged with the customer it routes to
+export const PROMPT_FEED = SPONSORS.flatMap((s) =>
+  s.prompts.map((p) => ({ ...p, sponsor: s.name, mono: s.mono, hero: !!s.hero })),
+);
+
 // ---- corpus the controlled web_search returns (§8 corpus) ----
 export const CORPUS: Record<"weak" | "optimized", Corpus> = {
   weak: {

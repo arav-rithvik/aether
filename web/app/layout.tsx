@@ -6,7 +6,7 @@ const geist = Geist({ variable: "--font-geist", subsets: ["latin"] });
 const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Aether — Agent Awareness Optimization",
+  title: "Aether · Agentic Awareness Optimization",
   description:
     "The wind tunnel for the agent economy. We measure and raise the rate at which AI agents discover and use your product to do a job.",
 };

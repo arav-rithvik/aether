@@ -1,4 +1,5 @@
 "use client";
+import { OrangeSliceMark } from "./OrangeSliceMark";
 
 const LINKS = [
   { label: "How it works", href: "#algorithm" },
@@ -37,9 +38,7 @@ export function StatusRail() {
         <div className="ml-auto flex items-center gap-3">
           {/* the demo is shown inside OrangeSlice's account */}
           <span className="hidden items-center gap-2 rounded-lg border border-[var(--color-line)] bg-white px-2.5 py-1.5 sm:flex">
-            <span className="flex h-5 w-5 items-center justify-center rounded-[6px] bg-[var(--color-yc)] font-mono text-[10px] font-bold text-white">
-              OS
-            </span>
+            <OrangeSliceMark size={20} />
             <span className="font-sans text-[13px] font-medium text-[var(--color-ink)]">OrangeSlice</span>
             <span className="text-[var(--color-ink-3)]">▾</span>
           </span>
