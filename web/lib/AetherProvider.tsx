@@ -14,7 +14,7 @@ export function AetherProvider({ children }: { children: React.ReactNode }) {
 
   const [version, setVersionRaw] = useState(1);
   const [model, setModel] = useState<ModelId>("gpt-4o");
-  const [playing, setPlaying] = useState(false);
+  const [playing, setPlaying] = useState(true); // autoplay the climb on load
   const [feed, setFeed] = useState<Run[]>([]);
 
   const playTimer = useRef<ReturnType<typeof setTimeout> | null>(null);

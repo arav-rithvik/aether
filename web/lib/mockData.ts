@@ -52,7 +52,7 @@ export const PHRASINGS: { text: string; split: Split }[] = [
   { text: "grow my pipeline this quarter", split: "test" },
 ];
 
-export const TOTAL_VERSIONS = 3;
+export const TOTAL_VERSIONS = 2; // v1 baseline + v2 (v3 was honesty-aborted by the Fact-Checker)
 const RUNS_PER_CELL = 10; // runs per (version × model × phrasing)
 
 // distribution of chosen tool per version, per model: [OS, competitor, DIY]
