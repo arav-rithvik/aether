@@ -1,0 +1,6 @@
+{
+  "name": "aether",
+  "private": true,
+  "description": "Agent Awareness Optimization — make agents discover + use a product.",
+  "workspaces": ["engine", "web"]
+}
