@@ -1,4 +1,5 @@
 "use client";
+import { ConvexClientProvider } from "@/lib/ConvexClientProvider";
 import { AetherProvider } from "@/lib/AetherProvider";
 import { StatusRail } from "@/components/StatusRail";
 import { LandingHero } from "@/components/LandingHero";
@@ -17,8 +18,9 @@ import { Panel } from "@/components/ui";
 
 export default function Page() {
   return (
+    <ConvexClientProvider>
     <AetherProvider>
-      {/* announcement bar — stolen from the OrangeSlice look */}
+      {/* announcement bar */}
       <div className="w-full border-b border-[var(--color-line)] bg-[var(--color-panel)]">
         <div className="mx-auto flex max-w-[1240px] items-center justify-center gap-2 px-6 py-1.5 text-center font-sans text-[12.5px] text-[var(--color-ink-2)]">
           <span className="h-1.5 w-1.5 rounded-full bg-[var(--color-yc)]" />
@@ -69,7 +71,7 @@ export default function Page() {
         </section>
 
         {/* MATH + ENGINE STATS */}
-        <section className="mt-10 grid items-start gap-6 lg:grid-cols-2">
+        <section className="mt-10 flex flex-col gap-6">
           <Panel label="The math" hint="every % traced to raw counts">
             <MathPanel />
           </Panel>
@@ -79,7 +81,7 @@ export default function Page() {
         </section>
 
         {/* WHY REJECTED + CORPUS */}
-        <section className="mt-10 grid items-start gap-6 lg:grid-cols-2">
+        <section className="mt-10 flex flex-col gap-6">
           <Panel label="Why agents reject you" hint="tagged from real reasoning" live>
             <DiagnosisPanel />
           </Panel>
@@ -89,7 +91,7 @@ export default function Page() {
         </section>
 
         {/* PROOF: CLIMB + FUNNEL */}
-        <section id="proof" className="mt-10 grid items-start gap-6 scroll-mt-20 lg:grid-cols-2">
+        <section id="proof" className="mt-10 flex flex-col gap-6 scroll-mt-20">
           <Panel label="Proof" hint="usage over versions, two models">
             <ClimbChart />
           </Panel>
@@ -110,8 +112,8 @@ export default function Page() {
           <p className="font-sans text-[12.5px] leading-relaxed text-[var(--color-ink-2)]">
             <span className="font-semibold text-[var(--color-ink)]">Calibrated honesty:</span>{" "}
             We control the retrieval surface so it&apos;s reproducible on camera. In production this
-            is the live web and your own footprint, which you delegate to us. We show the mechanism —
-            we never touch your live site, and every number here is computed from runs, never hand-set.
+            is the live web and your own footprint, which you delegate to us. We show the mechanism.
+            We never touch your live site, and every number here is computed from runs, never hand-set.
           </p>
           <p className="mt-2 font-mono text-[10.5px] text-[var(--color-ink-3)]">
             ◷ frontend running on a simulated wind tunnel · swaps to live Convex with no component
@@ -120,5 +122,6 @@ export default function Page() {
         </footer>
       </main>
     </AetherProvider>
+    </ConvexClientProvider>
   );
 }

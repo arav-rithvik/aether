@@ -9,16 +9,20 @@
 import { createContext, useContext } from "react";
 import { CORPUS, DESCRIPTIONS, PHRASINGS, TOTAL_VERSIONS, competitorRate, generate } from "./mockData";
 import { FailureTag, MODELS, ModelId, Run, Score } from "./schema";
+import { getLive } from "./live";
 
-// generated once per load (deterministic) — stands in for the Convex tables
-const DATA: { runs: Run[]; scores: Score[] } = generate();
+// deterministic mock; used until live Convex data is set (then auto-swaps)
+const MOCK: { runs: Run[]; scores: Score[] } = generate();
+function ds(): { runs: Run[]; scores: Score[] } {
+  return getLive() ?? MOCK;
+}
 
-export const TOTAL_RUNS = DATA.runs.length;
+export const TOTAL_RUNS = MOCK.runs.length;
 export const SWARM_SIZE = 100; // the "100-agent swarm" (§9)
 
 export function scoreOf(model: ModelId, version: number): Score {
   return (
-    DATA.scores.find((s) => s.model === model && s.descriptionVersion === version) ?? {
+    ds().scores.find((s) => s.model === model && s.descriptionVersion === version) ?? {
       id: "x",
       descriptionVersion: version,
       model,
@@ -30,11 +34,11 @@ export function scoreOf(model: ModelId, version: number): Score {
 }
 
 export function compRate(model: ModelId, version: number) {
-  return competitorRate(DATA.runs, model, version);
+  return competitorRate(ds().runs, model, version);
 }
 
 export function runsFor(model: ModelId, version: number) {
-  return DATA.runs.filter((r) => r.model === model && r.descriptionVersion === version);
+  return ds().runs.filter((r) => r.model === model && r.descriptionVersion === version);
 }
 
 export function failureBreakdown(model: ModelId, version: number): Record<FailureTag, number> {
@@ -83,7 +87,7 @@ export function mathFor(model: ModelId, version: number) {
 export function engineStats() {
   const trainN = PHRASINGS.filter((p) => p.split === "train").length;
   const testN = PHRASINGS.filter((p) => p.split === "test").length;
-  const totalRuns = DATA.runs.length;
+  const totalRuns = ds().runs.length;
   const perCell = runsFor("gpt", 1).filter((r) => r.phrasing === PHRASINGS[0].text).length;
   const taggerCalls = totalRuns; // one labeler call per run
   const optimizerCalls = TOTAL_VERSIONS - 1; // rewrites between versions

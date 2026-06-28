@@ -111,7 +111,8 @@ export function Pipeline() {
         { k: "ok", t: "100 runs complete" },
       ],
       sections: [
-        { h: "What happens", body: "Real Claude and GPT-5 agents run the job end to end with search and code. We log what each one actually picked and called." },
+        { h: "What happens", body: "Hundreds of real Claude and GPT-5 agents run the job end to end inside an isolated sandbox, with search and code, each blind to the others. We log what every one actually picked and called." },
+        { h: "What we collect", body: "Per run we store the phrasing, the model, the tool it chose, whether the call ran and returned usable data, and a slice of its reasoning. Nothing about your end users. That data trains the optimizer and powers every number on this page." },
         { h: "Why it matters", body: "These are real LLM decisions, not a simulation. The whole pipeline stands on observed behavior, which is exactly what survives a code review." },
       ],
     },
@@ -217,9 +218,11 @@ export function Pipeline() {
 
   return (
     <div>
-      <p className="mb-6 max-w-[640px] font-sans text-[14px] leading-relaxed text-[var(--color-ink-2)]">
-        A closed loop, per customer, per job. It measures real agent behavior, finds why you lose,
-        rewrites your footprint, and proves the lift, then repeats as models drift.{" "}
+      <p className="mb-6 max-w-[680px] font-sans text-[14px] leading-relaxed text-[var(--color-ink-2)]">
+        We spin up hundreds of real agents in an isolated sandbox, hand them the job through a search
+        engine we control, and watch which tool they reach for. By reading their reasoning we reverse
+        engineer why a model picks one tool over another, rewrite your footprint to win that decision,
+        and prove the lift on phrasings the optimizer never saw.{" "}
         <span className="text-[var(--color-ink-3)]">Click any step to open it.</span>
       </p>
 

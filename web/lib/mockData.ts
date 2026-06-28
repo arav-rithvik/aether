@@ -298,10 +298,24 @@ export const SPONSORS: Sponsor[] = [
   },
 ];
 
-// every prompt flattened, tagged with the customer it routes to
-export const PROMPT_FEED = SPONSORS.flatMap((s) =>
-  s.prompts.map((p) => ({ ...p, sponsor: s.name, mono: s.mono, hero: !!s.hero })),
-);
+// hero typewriter: personal, varied tasks a real founder would type.
+// Each routes to the sponsor whose tool does it best. Order is interleaved
+// so sponsors never repeat back to back.
+export const PROMPT_FEED: { task: string; sponsor: string }[] = [
+  { task: "I run Lopus, can you find me 20 high-intent buyers and start outreach?", sponsor: "OrangeSlice" },
+  { task: "look at our repo and refactor the billing module, then fix the failing tests", sponsor: "Cursor" },
+  { task: "add a realtime backend so our dashboard updates live before the demo", sponsor: "Convex" },
+  { task: "draft an in-app AI assistant for Lore and wire up streaming", sponsor: "OpenAI" },
+  { task: "I'm growing Cruitical, build a prospect list of companies hiring AI talent and email them", sponsor: "OrangeSlice" },
+  { task: "implement this feature across the whole repo and open a clean PR", sponsor: "Cursor" },
+  { task: "classify our 10k support tickets by topic so we can triage them", sponsor: "OpenAI" },
+  { task: "sync state across clients with live queries, no websocket plumbing", sponsor: "Convex" },
+  { task: "can you read my business plan and find design partners that fit our ICP?", sponsor: "OrangeSlice" },
+  { task: "we're at Verdex, find and fix the checkout bug we shipped last night", sponsor: "Cursor" },
+  { task: "build semantic search over our docs so users can ask questions", sponsor: "OpenAI" },
+  { task: "store and react to our app's data in real time as users type", sponsor: "Convex" },
+  { task: "score these leads by buying intent and queue outreach for the top 20", sponsor: "OrangeSlice" },
+];
 
 // ---- corpus the controlled web_search returns (§8 corpus) ----
 export const CORPUS: Record<"weak" | "optimized", Corpus> = {

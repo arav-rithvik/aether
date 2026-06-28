@@ -1,13 +1,17 @@
 "use client";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { Ctx, runsFor, TOTAL_VERSIONS } from "./useAether";
 import { ModelId, Run } from "./schema";
+import { getLive, subscribeLive } from "./live";
 
 const VERSION_DWELL = 2800; // ms the autoplay rests on each version
 const FEED_INTERVAL = 110; // ms between streamed runs
 const FEED_MAX = 36;
 
 export function AetherProvider({ children }: { children: React.ReactNode }) {
+  // re-render the whole tree when live Convex data arrives (or is absent)
+  useSyncExternalStore(subscribeLive, getLive, () => null);
+
   const [version, setVersionRaw] = useState(1);
   const [model, setModel] = useState<ModelId>("gpt");
   const [playing, setPlaying] = useState(false);
