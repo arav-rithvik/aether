@@ -4,7 +4,9 @@ import { makeFunctionReference } from "convex/server";
 import { useEffect } from "react";
 import { setLive } from "./live";
 
-const url = process.env.NEXT_PUBLIC_CONVEX_URL;
+// Public Convex deployment URL (not a secret — it ships in the browser bundle anyway).
+// Hardcoded fallback so any checkout connects to the shared live engine with zero setup.
+const url = process.env.NEXT_PUBLIC_CONVEX_URL ?? "https://cheerful-ferret-802.convex.cloud";
 const client = url ? new ConvexReactClient(url) : null;
 
 // referenced by string so we don't need generated types to build
