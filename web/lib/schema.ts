@@ -36,12 +36,26 @@ export const FAILURE_LABEL: Record<FailureTag, string> = {
 };
 
 // the three candidate tools the agent has on the table each run
-export type ToolId = "orangeslice" | "leadgenius" | "self";
-export const TOOL_LABEL: Record<ToolId, string> = {
-  orangeslice: "OrangeSlice",
-  leadgenius: "LeadGenius (rival)",
-  self: "Did it itself",
-};
+// "orangeslice" | "self" | a competitor id
+export type ToolId = string;
+
+// the named rivals an agent might reach for instead of you
+export const COMPETITORS: { id: string; name: string }[] = [
+  { id: "clay", name: "Clay" },
+  { id: "apollo", name: "Apollo" },
+  { id: "zoominfo", name: "ZoomInfo" },
+  { id: "leadgenius", name: "LeadGenius" },
+];
+const COMP_MAP: Record<string, string> = Object.fromEntries(COMPETITORS.map((c) => [c.id, c.name]));
+
+export function isCompetitor(id: string) {
+  return id in COMP_MAP;
+}
+export function toolLabel(id: string) {
+  if (id === "orangeslice") return "OrangeSlice";
+  if (id === "self") return "Did it itself";
+  return COMP_MAP[id] ?? id;
+}
 
 // ---- §8 tables ----
 

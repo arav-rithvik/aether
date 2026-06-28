@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { failureBreakdown, runsFor, TAG_FIX, useAether } from "@/lib/useAether";
-import { FAILURE_LABEL, FAILURE_TAGS, FailureTag, TOOL_LABEL } from "@/lib/schema";
+import { FAILURE_LABEL, FAILURE_TAGS, FailureTag, toolLabel } from "@/lib/schema";
 
 const TAG_COLOR: Record<FailureTag, string> = {
   not_found: "#8C887F",
@@ -151,7 +151,7 @@ export function DiagnosisPanel() {
                       className="font-mono text-[10px] font-semibold uppercase tracking-wide"
                       style={{ color: won ? "var(--color-yc-deep)" : "var(--color-ink-3)" }}
                     >
-                      {won ? "● used OrangeSlice" : `○ ${TOOL_LABEL[r.chosenTool]}`}
+                      {won ? "● used OrangeSlice" : `○ ${toolLabel(r.chosenTool)}`}
                     </span>
                     <span className="font-mono text-[9px] uppercase text-[var(--color-ink-3)]">
                       {r.split} · {r.failureTag ? FAILURE_LABEL[r.failureTag] : "execution"}

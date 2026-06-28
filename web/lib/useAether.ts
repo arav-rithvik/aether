@@ -8,7 +8,7 @@
 // ============================================================
 import { createContext, useContext } from "react";
 import { CORPUS, DESCRIPTIONS, PHRASINGS, TOTAL_VERSIONS, competitorRate, generate } from "./mockData";
-import { FailureTag, MODELS, ModelId, Run, Score } from "./schema";
+import { FailureTag, isCompetitor, MODELS, ModelId, Run, Score } from "./schema";
 import { getLive } from "./live";
 
 // deterministic mock; used until live Convex data is set (then auto-swaps)
@@ -79,7 +79,7 @@ export function mathFor(model: ModelId, version: number) {
   const selection = cell.filter((r) => r.chosenTool === "orangeslice").length; // recommended you
   const called = cell.filter((r) => r.calledTool).length; // tried to call your tool
   const execution = used; // call ran + returned usable data
-  const competitor = cell.filter((r) => r.chosenTool === "leadgenius").length;
+  const competitor = cell.filter((r) => isCompetitor(r.chosenTool)).length;
   const diy = cell.filter((r) => r.chosenTool === "self").length;
   return { n, used, candidacy, selection, called, execution, competitor, diy, rate: n ? used / n : 0 };
 }

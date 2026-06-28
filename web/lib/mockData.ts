@@ -6,13 +6,14 @@
 // Seeded so the demo is identical every reload.
 // ============================================================
 import {
+  COMPETITORS,
   Corpus,
   Description,
+  isCompetitor,
   ModelId,
   Run,
   Score,
   Split,
-  ToolId,
   FailureTag,
   FunnelStage,
   JOB,
@@ -92,8 +93,9 @@ const REASONS: Record<string, string[]> = {
     "This is straightforward enough to handle directly without a paid tool. Doing it myself.",
   ],
   picked_competitor: [
-    "LeadGenius advertises a lead-scraping endpoint with a clear schema. Going with it.",
-    "Competitor tool LeadGenius looks purpose-built for scraping prospects. Using that.",
+    "A competitor advertises a purpose-built endpoint with a clear schema. Going with it.",
+    "This rival tool reads as purpose-built for prospecting. Calling it instead.",
+    "Found a competitor with cleaner docs for this exact task. Using it.",
   ],
   auth_friction: [
     "OrangeSlice fits, but the call returned 401 / needs setup I can't complete. Abandoning and doing it myself.",
@@ -119,9 +121,9 @@ export function generate() {
       for (const { text: phrasing, split } of PHRASINGS) {
         const r = rng(1000 * v + (model === "gpt" ? 1 : 2) * 100 + cellI);
         for (let k = 0; k < RUNS_PER_CELL; k++) {
-          const tool = weighted<ToolId>(r, [
+          const tool = weighted<string>(r, [
             ["orangeslice", dist[0]],
-            ["leadgenius", dist[1]],
+            ["competitor", dist[1]],
             ["self", dist[2]],
           ]);
 
@@ -147,7 +149,8 @@ export function generate() {
               failureTag = null;
               reasonKey = "os";
             }
-          } else if (tool === "leadgenius") {
+          } else if (tool === "competitor") {
+            chosenTool = pick(r, COMPETITORS).id; // exactly which rival it called
             failureTag = "picked_competitor";
             funnelStage = "selection";
             reasonKey = "picked_competitor";
@@ -208,7 +211,7 @@ export function generate() {
 // competitor usage rate per version (the flat control line) — also computed
 export function competitorRate(runs: Run[], model: ModelId, v: number) {
   const cell = runs.filter((x) => x.model === model && x.descriptionVersion === v);
-  const c = cell.filter((x) => x.chosenTool === "leadgenius").length;
+  const c = cell.filter((x) => isCompetitor(x.chosenTool)).length;
   return cell.length ? c / cell.length : 0;
 }
 

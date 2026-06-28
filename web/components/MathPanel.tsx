@@ -1,11 +1,9 @@
 "use client";
 import { compRate, mathFor, useAether } from "@/lib/useAether";
-import { MODELS } from "@/lib/schema";
 
 export function MathPanel() {
   const { version, model } = useAether();
   const m = mathFor(model, version);
-  const modelLabel = MODELS.find((x) => x.id === model)?.label;
 
   const of = m.n || 1;
   const chain = [
@@ -17,27 +15,6 @@ export function MathPanel() {
 
   return (
     <div className="flex flex-col gap-4">
-      {/* the headline formula, with real counts */}
-      <div className="rounded-lg border border-[var(--color-line)] bg-[var(--color-panel)] p-3.5">
-        <div className="eyebrow">How the rate is computed</div>
-        <div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 font-mono text-[13px]">
-          <span className="text-[var(--color-ink-2)]">usage rate</span>
-          <span className="text-[var(--color-ink-3)]">=</span>
-          <span className="text-[var(--color-ink)]">used runs ÷ total runs</span>
-          <span className="text-[var(--color-ink-3)]">=</span>
-          <span className="tnum font-semibold text-[var(--color-ink)]">
-            {m.used} ÷ {m.n}
-          </span>
-          <span className="text-[var(--color-ink-3)]">=</span>
-          <span className="tnum text-[18px] font-bold text-[var(--color-yc)]">
-            {(m.rate * 100).toFixed(1)}%
-          </span>
-        </div>
-        <div className="mt-1 font-mono text-[10px] text-[var(--color-ink-3)]">
-          {modelLabel} · v{version} · counted live from runs, not hand-set
-        </div>
-      </div>
-
       {/* funnel as a number chain */}
       <div>
         <div className="eyebrow mb-2">Where the runs go</div>

@@ -1,8 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { runsFor, scoreOf, failureBreakdown, TAG_FIX, useAether } from "@/lib/useAether";
-import { FAILURE_LABEL, FailureTag, Run, TOOL_LABEL } from "@/lib/schema";
-import { UsageGauge } from "./UsageGauge";
+import { COMPETITORS, FAILURE_LABEL, FailureTag, isCompetitor, Run, toolLabel } from "@/lib/schema";
 
 const COL = { you: "#FF6600", comp: "#8A98AD", diy: "#D8D4CA" };
 
@@ -11,7 +10,7 @@ function split(runs: Run[]) {
   return {
     n,
     you: runs.filter((r) => r.chosenTool === "orangeslice").length,
-    comp: runs.filter((r) => r.chosenTool === "leadgenius").length,
+    comp: runs.filter((r) => isCompetitor(r.chosenTool)).length,
     diy: runs.filter((r) => r.chosenTool === "self").length,
   };
 }
@@ -69,28 +68,18 @@ export function Observability() {
   }, [openP]);
   const sel = byPhrasing.find((p) => p.phrasing === openP);
 
+  // exactly which competitors it called
+  const compCounts = COMPETITORS.map((c) => ({
+    ...c,
+    v: cell.filter((r) => r.chosenTool === c.id).length,
+  })).filter((c) => c.v > 0).sort((a, b) => b.v - a.v);
+
   return (
     <div className="flex flex-col gap-6">
-      {/* the headline number */}
-      <div className="grid items-center gap-6 rounded-xl border border-[var(--color-line)] bg-white p-6 lg:grid-cols-[340px_1fr]">
-        <UsageGauge />
-        <div>
-          <h3 className="font-display text-[22px] font-semibold tracking-tight text-[var(--color-ink)]">
-            One number that moves real agent behavior.
-          </h3>
-          <p className="mt-2 max-w-[520px] font-sans text-[14px] leading-relaxed text-[var(--color-ink-2)]">
-            Usage rate is the share of agent runs that pick <em>and</em> call OrangeSlice for the job,
-            measured on held-out phrasings with OpenAI agents. Agents prefer their own tools, so the
-            honest game is moving a stubborn number. Hit{" "}
-            <span className="font-medium text-[var(--color-ink)]">Run test</span> and watch it climb as
-            the footprint is rewritten.
-          </p>
-        </div>
-      </div>
-
       <p className="max-w-[720px] font-sans text-[14px] leading-relaxed text-[var(--color-ink-2)]">
-        Every run is observed. This is exactly what an OpenAI agent reached for over {s.n} runs,
-        against your competitor and the agent doing it itself.
+        Every run is observed. This is exactly what an OpenAI agent reached for over {s.n} runs:
+        you, the named competitors it called instead, and the agent doing it itself. Agents prefer
+        their own tools, so the honest game is moving a stubborn number.
       </p>
 
       {/* donut + legend */}
@@ -98,10 +87,26 @@ export function Observability() {
         <Donut you={s.you} comp={s.comp} diy={s.diy} n={s.n} />
         <div className="flex flex-col gap-2.5">
           <Row c={COL.you} label="OrangeSlice (you)" v={s.you} n={s.n} pct={youPct} bold />
-          <Row c={COL.comp} label="LeadGenius (competitor)" v={s.comp} n={s.n} pct={compPct} />
+          <Row c={COL.comp} label="Competitors (named below)" v={s.comp} n={s.n} pct={compPct} />
           <Row c={COL.diy} label="General-purpose agent (did it itself)" v={s.diy} n={s.n} pct={diyPct} />
         </div>
       </div>
+
+      {/* exactly which competitors it called */}
+      {compCounts.length > 0 && (
+        <div>
+          <span className="eyebrow">Who it called instead · named competitors</span>
+          <div className="mt-2 flex flex-wrap gap-2">
+            {compCounts.map((c) => (
+              <span key={c.id} className="inline-flex items-center gap-2 rounded-lg border border-[var(--color-line)] bg-white px-3 py-1.5">
+                <span className="h-2 w-2 rounded-full" style={{ background: COL.comp }} />
+                <span className="font-sans text-[12.5px] font-medium text-[var(--color-ink)]">{c.name}</span>
+                <span className="font-mono text-[11px] text-[var(--color-ink-3)]">{c.v} runs · {Math.round((c.v / n) * 100)}%</span>
+              </span>
+            ))}
+          </div>
+        </div>
+      )}
 
       {/* what this proves */}
       <div className="rounded-xl border-l-2 border-[var(--color-yc)] bg-[var(--color-yc-wash)] px-4 py-3">
@@ -184,7 +189,7 @@ export function Observability() {
                       <div className="flex items-center justify-between gap-2">
                         <span className="font-mono text-[11px] text-[var(--color-ink-3)]">run {i + 1} · {r.model === "gpt" ? "OpenAI" : "Claude"}</span>
                         <span className="font-mono text-[10px] font-semibold uppercase" style={{ color: won ? "var(--color-yc-deep)" : "var(--color-ink-2)" }}>
-                          {r.chosenTool === "orangeslice" ? "used you" : TOOL_LABEL[r.chosenTool]} · {r.failureTag ? FAILURE_LABEL[r.failureTag] : "execution"}
+                          {r.chosenTool === "orangeslice" ? "used you" : toolLabel(r.chosenTool)} · {r.failureTag ? FAILURE_LABEL[r.failureTag] : "execution"}
                         </span>
                       </div>
                       <p className="mt-1 font-sans text-[12px] leading-snug text-[var(--color-ink-2)]">“{r.reasoningExcerpt}”</p>

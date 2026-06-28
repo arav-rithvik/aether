@@ -138,9 +138,10 @@ export const run = mutation({
           for (let k = 0; k < RUNS_PER_CELL; k++) {
             const tool = weighted<string>(r, [
               ["orangeslice", dist[0]],
-              ["leadgenius", dist[1]],
+              ["competitor", dist[1]],
               ["self", dist[2]],
             ]);
+            let chosen = tool;
             let calledTool = false, returnedUsableData = false, funnelStage = "selection";
             let failureTag: string | null = null, reasonKey = "";
             if (tool === "orangeslice") {
@@ -148,7 +149,8 @@ export const run = mutation({
               funnelStage = "execution";
               if (r() < OS_EXEC_FAIL[vv]) { failureTag = "auth_friction"; reasonKey = "auth_friction"; }
               else { returnedUsableData = true; reasonKey = "os"; }
-            } else if (tool === "leadgenius") {
+            } else if (tool === "competitor") {
+              chosen = pick(r, ["clay", "apollo", "zoominfo", "leadgenius"]);
               failureTag = "picked_competitor"; reasonKey = "picked_competitor";
             } else {
               const tag = weighted<string>(r, DIY_TAGS[vv]);
@@ -158,7 +160,7 @@ export const run = mutation({
               ts: 1_750_000_000_000 + vv * 1_000_000 + (cellI * RUNS_PER_CELL + k) * 800 + (model === "gpt" ? 0 : 5000),
               job: JOB, phrasing, split, model, descriptionVersion: vv,
               toolsOnTable: ["orangeslice_find_high_intent_buyers", "leadgenius_scrape", "do_it_yourself"],
-              chosenTool: tool, calledTool, returnedUsableData, funnelStage, failureTag,
+              chosenTool: chosen, calledTool, returnedUsableData, funnelStage, failureTag,
               reasoningExcerpt: pick(r, REASONS[reasonKey]),
             };
             await ctx.db.insert("runs", doc);

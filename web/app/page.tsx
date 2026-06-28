@@ -5,7 +5,6 @@ import { StatusRail } from "@/components/StatusRail";
 import { LandingHero } from "@/components/LandingHero";
 import { DemoConsole } from "@/components/DemoConsole";
 import { Observability } from "@/components/Observability";
-import { AgentsPanel } from "@/components/AgentsPanel";
 import { Pipeline } from "@/components/Pipeline";
 import { ToolRecommendation } from "@/components/ToolRecommendation";
 import { MathPanel } from "@/components/MathPanel";
@@ -42,13 +41,6 @@ export default function Page() {
         <section id="observability" className="mt-10 scroll-mt-20">
           <Panel label="Observability" hint="what AI agents reach for, measured" live>
             <Observability />
-          </Panel>
-        </section>
-
-        {/* AGENTS — connect your keys */}
-        <section id="agents" className="mt-10 scroll-mt-20">
-          <Panel label="Agents" hint="connect a model to run the wind tunnel with your own key">
-            <AgentsPanel />
           </Panel>
         </section>
 

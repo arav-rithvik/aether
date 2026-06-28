@@ -2,10 +2,10 @@
 import { OrangeSliceMark } from "./OrangeSliceMark";
 
 const LINKS = [
-  { label: "Observability", href: "#observability" },
-  { label: "Agents", href: "#agents" },
-  { label: "How it works", href: "#algorithm" },
-  { label: "Proof", href: "#proof" },
+  { label: "Observability", href: "/#observability" },
+  { label: "Agents", href: "/agents" },
+  { label: "How it works", href: "/#algorithm" },
+  { label: "Proof", href: "/#proof" },
 ];
 
 export function StatusRail() {
@@ -44,7 +44,7 @@ export function StatusRail() {
             <span className="text-[var(--color-ink-3)]">▾</span>
           </span>
           <a
-            href="#demo"
+            href="/#demo"
             className="rounded-lg bg-[var(--color-ink)] px-4 py-2 font-sans text-[13px] font-semibold text-white transition-opacity hover:opacity-90"
           >
             See it run

@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
 import { runsFor, useAether, TOTAL_VERSIONS } from "@/lib/useAether";
-import { FAILURE_LABEL, Run, TOOL_LABEL } from "@/lib/schema";
+import { FAILURE_LABEL, isCompetitor, Run, toolLabel } from "@/lib/schema";
 import { SPONSORS } from "@/lib/mockData";
 import { OrangeSliceMark } from "./OrangeSliceMark";
 
@@ -173,7 +173,7 @@ export function DemoConsole() {
                     background:
                       r.chosenTool === "orangeslice"
                         ? "var(--color-yc)"
-                        : r.chosenTool === "leadgenius"
+                        : isCompetitor(r.chosenTool)
                         ? "var(--color-steel)"
                         : "var(--color-diy)",
                   }}
@@ -182,7 +182,7 @@ export function DemoConsole() {
                   className="truncate font-sans text-[12px]"
                   style={{ color: won ? "var(--color-yc-deep)" : "var(--color-ink-2)", fontWeight: won ? 600 : 400 }}
                 >
-                  {r.chosenTool === "orangeslice" ? "OrangeSlice" : TOOL_LABEL[r.chosenTool]}
+                  {toolLabel(r.chosenTool)}
                 </span>
               </span>
               <span className="font-mono text-[11px]">
