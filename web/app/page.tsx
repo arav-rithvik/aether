@@ -6,7 +6,7 @@ import { LandingHero } from "@/components/LandingHero";
 import { DemoConsole } from "@/components/DemoConsole";
 import { Observability } from "@/components/Observability";
 import { Pipeline } from "@/components/Pipeline";
-import { ToolRecommendation } from "@/components/ToolRecommendation";
+import { AAOSummary } from "@/components/AAOSummary";
 import { MathPanel } from "@/components/MathPanel";
 import { DiagnosisPanel } from "@/components/DiagnosisPanel";
 import { ClimbChart } from "@/components/ClimbChart";
@@ -51,13 +51,6 @@ export default function Page() {
           </Panel>
         </section>
 
-        {/* THE RECOMMENDATION */}
-        <section id="recommendation" className="mt-10 scroll-mt-20">
-          <Panel label="The recommendation" hint="what the engine changes on your door">
-            <ToolRecommendation />
-          </Panel>
-        </section>
-
         {/* THE MATH */}
         <section className="mt-10">
           <Panel label="The math" hint="every % traced to raw counts">
@@ -79,19 +72,10 @@ export default function Page() {
           </Panel>
         </section>
 
-        {/* HONEST FOOTER */}
-        <footer className="mt-8 rounded-xl border border-dashed border-[var(--color-line-2)] bg-[var(--color-panel)] px-6 py-4">
-          <p className="font-sans text-[12.5px] leading-relaxed text-[var(--color-ink-2)]">
-            <span className="font-semibold text-[var(--color-ink)]">Calibrated honesty:</span>{" "}
-            We control the retrieval surface so it&apos;s reproducible on camera. In production this
-            is the live web and your own footprint, which you delegate to us. We show the mechanism.
-            We never touch your live site, and every number here is computed from runs, never hand-set.
-          </p>
-          <p className="mt-2 font-mono text-[10.5px] text-[var(--color-ink-3)]">
-            ◷ frontend running on a simulated wind tunnel · swaps to live Convex with no component
-            changes (schema §8).
-          </p>
-        </footer>
+        {/* 2AO SUMMARY — the big autonomous recap, at the very bottom */}
+        <section id="summary" className="mt-12 scroll-mt-20">
+          <AAOSummary />
+        </section>
       </main>
     </AetherProvider>
     </ConvexClientProvider>

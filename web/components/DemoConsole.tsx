@@ -32,7 +32,16 @@ export function DemoConsole() {
     if (timer.current) clearInterval(timer.current);
     timer.current = null;
   };
-  useEffect(() => stop, []);
+
+  // autonomous: the engine runs the test itself on load (and stays re-runnable)
+  useEffect(() => {
+    const id = setTimeout(() => runTest(), 600);
+    return () => {
+      clearTimeout(id);
+      stop();
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   function runTest() {
     stop();
@@ -67,7 +76,7 @@ export function DemoConsole() {
             Test: does an agent pick OrangeSlice?
           </div>
           <div className="truncate font-mono text-[11.5px] text-[var(--color-ink-3)]">
-            job: find high-intent buyers and start outreach · OpenAI agents · Claude and Cursor coming soon
+            runs automatically · re-tests as models drift · OpenAI agents · Claude and Cursor soon
           </div>
         </div>
 
@@ -146,7 +155,7 @@ export function DemoConsole() {
         {status === "idle" && (
           <div className="flex h-[160px] flex-col items-center justify-center gap-1 text-center">
             <span className="font-sans text-[13px] text-[var(--color-ink-2)]">
-              Closed test. Nothing runs until you click it.
+              The engine runs this on its own schedule. Starting…
             </span>
             <span className="font-mono text-[11px] text-[var(--color-ink-3)]">
               100 phrasings of the same job, through real agents, results stream in live.

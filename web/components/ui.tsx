@@ -26,12 +26,6 @@ export function Panel({
               <p className="mt-0.5 font-sans text-[12.5px] text-[var(--color-ink-3)]">{hint}</p>
             )}
           </div>
-          {live && (
-            <span className="mt-1 inline-flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-wide text-[var(--color-ink-3)]">
-              <span className="live-dot inline-block h-1.5 w-1.5 rounded-full bg-[var(--color-yc)]" />
-              live
-            </span>
-          )}
         </header>
       )}
       <div className="flex-1">{children}</div>
