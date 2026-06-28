@@ -193,8 +193,8 @@ export function Pipeline() {
         { k: "dim", t: "competitor  flat (control)" },
       ],
       sections: [
-        { h: "What happens", body: "We re-run on the held-out phrasings the optimizer never saw, on both models, and compare against the competitor's rate." },
-        { h: "Why it matters", body: "If usage climbs while the control stays flat, the lift is real, not noise or model drift. That is the entire proof, on two models." },
+        { h: "What happens", body: "We re-run on the held-out phrasings the optimizer never saw with OpenAI agents, and compare against the competitor's rate. Claude and Cursor agents are next on the same engine." },
+        { h: "Why it matters", body: "If usage climbs while the control stays flat, the lift is real, not noise. The honest ceiling is that agents still prefer their own tools, so the win is moving a stubborn number, not magic." },
       ],
     },
   ];

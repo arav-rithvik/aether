@@ -1,25 +1,24 @@
 "use client";
+import { useEffect, useState } from "react";
 import { runsFor, scoreOf, failureBreakdown, TAG_FIX, useAether } from "@/lib/useAether";
-import { FAILURE_LABEL, FailureTag, Run } from "@/lib/schema";
+import { FAILURE_LABEL, FailureTag, Run, TOOL_LABEL } from "@/lib/schema";
+import { UsageGauge } from "./UsageGauge";
 
 const COL = { you: "#FF6600", comp: "#8A98AD", diy: "#D8D4CA" };
 
 function split(runs: Run[]) {
   const n = runs.length;
-  const you = runs.filter((r) => r.chosenTool === "orangeslice").length;
-  const comp = runs.filter((r) => r.chosenTool === "leadgenius").length;
-  const diy = runs.filter((r) => r.chosenTool === "self").length;
-  return { n, you, comp, diy };
+  return {
+    n,
+    you: runs.filter((r) => r.chosenTool === "orangeslice").length,
+    comp: runs.filter((r) => r.chosenTool === "leadgenius").length,
+    diy: runs.filter((r) => r.chosenTool === "self").length,
+  };
 }
 
-// SVG donut from three counts
 function Donut({ you, comp, diy, n }: { you: number; comp: number; diy: number; n: number }) {
   const R = 56, S = 22, C = 2 * Math.PI * R;
-  const segs = [
-    { v: you, c: COL.you },
-    { v: comp, c: COL.comp },
-    { v: diy, c: COL.diy },
-  ];
+  const segs = [{ v: you, c: COL.you }, { v: comp, c: COL.comp }, { v: diy, c: COL.diy }];
   let offset = 0;
   const total = n || 1;
   return (
@@ -28,23 +27,13 @@ function Donut({ you, comp, diy, n }: { you: number; comp: number; diy: number; 
         <circle r={R} fill="none" stroke="var(--color-panel-2)" strokeWidth={S} />
         {segs.map((s, i) => {
           const len = (s.v / total) * C;
-          const el = (
-            <circle
-              key={i}
-              r={R}
-              fill="none"
-              stroke={s.c}
-              strokeWidth={S}
-              strokeDasharray={`${len} ${C - len}`}
-              strokeDashoffset={-offset}
-            />
-          );
+          const el = <circle key={i} r={R} fill="none" stroke={s.c} strokeWidth={S} strokeDasharray={`${len} ${C - len}`} strokeDashoffset={-offset} />;
           offset += len;
           return el;
         })}
       </g>
       <text x="75" y="71" textAnchor="middle" className="fill-[var(--color-ink)]" style={{ font: "700 26px var(--font-display)" }}>
-        {total ? Math.round((you / total) * 100) : 0}%
+        {Math.round((you / total) * 100)}%
       </text>
       <text x="75" y="90" textAnchor="middle" className="fill-[var(--color-ink-3)]" style={{ font: "10px var(--font-mono)" }}>
         chose you
@@ -66,20 +55,45 @@ export function Observability() {
   const bd = failureBreakdown(model, version);
   const topTag = (Object.keys(bd) as FailureTag[]).filter((t) => bd[t] > 0).sort((a, b) => bd[b] - bd[a])[0];
 
-  // per-search breakdown (the excessive, drillable data)
   const byPhrasing = Array.from(new Set(cell.map((r) => r.phrasing))).map((p) => {
     const g = cell.filter((r) => r.phrasing === p);
-    return { phrasing: p, ...split(g), split: g[0]?.split };
+    return { phrasing: p, runs: g, ...split(g), splitKind: g[0]?.split };
   });
+
+  const [openP, setOpenP] = useState<string | null>(null);
+  useEffect(() => {
+    if (!openP) return;
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setOpenP(null);
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [openP]);
+  const sel = byPhrasing.find((p) => p.phrasing === openP);
 
   return (
     <div className="flex flex-col gap-6">
+      {/* the headline number */}
+      <div className="grid items-center gap-6 rounded-xl border border-[var(--color-line)] bg-white p-6 lg:grid-cols-[340px_1fr]">
+        <UsageGauge />
+        <div>
+          <h3 className="font-display text-[22px] font-semibold tracking-tight text-[var(--color-ink)]">
+            One number that moves real agent behavior.
+          </h3>
+          <p className="mt-2 max-w-[520px] font-sans text-[14px] leading-relaxed text-[var(--color-ink-2)]">
+            Usage rate is the share of agent runs that pick <em>and</em> call OrangeSlice for the job,
+            measured on held-out phrasings with OpenAI agents. Agents prefer their own tools, so the
+            honest game is moving a stubborn number. Hit{" "}
+            <span className="font-medium text-[var(--color-ink)]">Run test</span> and watch it climb as
+            the footprint is rewritten.
+          </p>
+        </div>
+      </div>
+
       <p className="max-w-[720px] font-sans text-[14px] leading-relaxed text-[var(--color-ink-2)]">
-        Every run is observed. This is exactly what an OpenAI agent reached for when sent to do the
-        job, over {s.n} runs, broken down against your competitor and the agent doing it itself.
+        Every run is observed. This is exactly what an OpenAI agent reached for over {s.n} runs,
+        against your competitor and the agent doing it itself.
       </p>
 
-      {/* donut + legend/compare */}
+      {/* donut + legend */}
       <div className="grid items-center gap-6 rounded-xl border border-[var(--color-line)] bg-white p-5 sm:grid-cols-[150px_1fr]">
         <Donut you={s.you} comp={s.comp} diy={s.diy} n={s.n} />
         <div className="flex flex-col gap-2.5">
@@ -93,41 +107,40 @@ export function Observability() {
       <div className="rounded-xl border-l-2 border-[var(--color-yc)] bg-[var(--color-yc-wash)] px-4 py-3">
         <div className="eyebrow !text-[var(--color-yc-deep)]">What this proves</div>
         <p className="mt-1 font-sans text-[13.5px] leading-relaxed text-[var(--color-ink-2)]">
-          Most teams assume an agent would default to its own general-purpose tools. The data says
-          otherwise: when an agent needs to find buyers, it reaches for{" "}
+          Agents default to their own general-purpose tools. The win is real but bounded: when an
+          agent needs to find buyers, it reaches for{" "}
           <span className="font-semibold text-[var(--color-ink)]">OrangeSlice {youPct}% of the time</span>
-          , up from {baseline}% before the footprint was rewritten, while it fell back to its own
-          tools only {diyPct}% of the time.
+          , up from {baseline}%, while it still falls back to its own tools {diyPct}% of the time.
         </p>
       </div>
 
-      {/* per-search breakdown — the drillable data */}
+      {/* per-search, clickable */}
       <div>
         <div className="mb-2 flex items-center justify-between">
-          <span className="eyebrow">Per search · what the agent chose</span>
+          <span className="eyebrow">Per search · click to see every run</span>
           <span className="font-mono text-[11px] text-[var(--color-ink-3)]">{byPhrasing.length} searches</span>
         </div>
         <div className="overflow-hidden rounded-lg border border-[var(--color-line)]">
-          <div className="grid grid-cols-[1fr_60px_1fr] gap-3 border-b border-[var(--color-line)] bg-[var(--color-panel)] px-3 py-2 font-mono text-[10px] uppercase tracking-wide text-[var(--color-ink-3)]">
-            <span>search phrasing</span>
-            <span>split</span>
-            <span>you / competitor / itself</span>
-          </div>
           {byPhrasing.map((p) => (
-            <div key={p.phrasing} className="grid grid-cols-[1fr_60px_1fr] items-center gap-3 border-b border-[var(--color-line)] px-3 py-2 text-[12px] last:border-0">
-              <span className="truncate font-sans text-[var(--color-ink)]">{p.phrasing}</span>
-              <span className="font-mono text-[10px] text-[var(--color-ink-3)]">{p.split}</span>
+            <button
+              key={p.phrasing}
+              onClick={() => setOpenP(p.phrasing)}
+              className="grid w-full grid-cols-[1fr_56px_1fr_16px] items-center gap-3 border-b border-[var(--color-line)] px-3 py-2.5 text-left transition-colors last:border-0 hover:bg-[var(--color-panel)]"
+            >
+              <span className="truncate font-sans text-[12px] text-[var(--color-ink)]">{p.phrasing}</span>
+              <span className="font-mono text-[10px] text-[var(--color-ink-3)]">{p.splitKind}</span>
               <div className="flex h-4 overflow-hidden rounded">
                 <Bar v={p.you} n={p.n} c={COL.you} />
                 <Bar v={p.comp} n={p.n} c={COL.comp} />
                 <Bar v={p.diy} n={p.n} c={COL.diy} />
               </div>
-            </div>
+              <span className="text-[var(--color-line-2)]">›</span>
+            </button>
           ))}
         </div>
       </div>
 
-      {/* trend / lever */}
+      {/* trend */}
       <div className="rounded-xl border border-[var(--color-line)] bg-[var(--color-panel)] px-4 py-3">
         <div className="eyebrow">Trend · your biggest lever</div>
         {topTag ? (
@@ -142,6 +155,47 @@ export function Observability() {
           </p>
         )}
       </div>
+
+      {/* per-search drilldown modal */}
+      {sel && openP && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 [animation:fadein_.15s_ease]" onClick={() => setOpenP(null)}>
+          <div className="absolute inset-0" style={{ background: "rgba(20,17,13,0.45)" }} />
+          <div className="relative flex max-h-[86vh] w-full max-w-[680px] flex-col overflow-hidden rounded-2xl border border-[var(--color-line)] bg-white shadow-2xl" onClick={(e) => e.stopPropagation()}>
+            <div className="flex items-start justify-between gap-3 border-b border-[var(--color-line)] px-5 py-4">
+              <div>
+                <div className="font-mono text-[10px] uppercase tracking-wide text-[var(--color-ink-3)]">
+                  search · {sel.splitKind} · {sel.n} runs · OpenAI
+                </div>
+                <h3 className="mt-1 max-w-[520px] font-display text-[17px] font-semibold tracking-tight text-[var(--color-ink)]">
+                  “{sel.phrasing}”
+                </h3>
+                <div className="mt-1 font-mono text-[11px] text-[var(--color-ink-2)]">
+                  you {Math.round((sel.you / sel.n) * 100)}% · competitor {Math.round((sel.comp / sel.n) * 100)}% · itself {Math.round((sel.diy / sel.n) * 100)}%
+                </div>
+              </div>
+              <button onClick={() => setOpenP(null)} className="rounded-md px-2 py-1 font-mono text-[14px] text-[var(--color-ink-3)] hover:bg-[var(--color-panel-2)]">✕</button>
+            </div>
+            <div className="overflow-y-auto px-5 py-4">
+              <div className="flex flex-col gap-1.5">
+                {sel.runs.map((r, i) => {
+                  const won = r.chosenTool === "orangeslice" && r.returnedUsableData;
+                  return (
+                    <div key={r.id} className="rounded-lg border border-[var(--color-line)] px-3 py-2" style={{ background: won ? "var(--color-yc-wash)" : "white" }}>
+                      <div className="flex items-center justify-between gap-2">
+                        <span className="font-mono text-[11px] text-[var(--color-ink-3)]">run {i + 1} · {r.model === "gpt" ? "OpenAI" : "Claude"}</span>
+                        <span className="font-mono text-[10px] font-semibold uppercase" style={{ color: won ? "var(--color-yc-deep)" : "var(--color-ink-2)" }}>
+                          {r.chosenTool === "orangeslice" ? "used you" : TOOL_LABEL[r.chosenTool]} · {r.failureTag ? FAILURE_LABEL[r.failureTag] : "execution"}
+                        </span>
+                      </div>
+                      <p className="mt-1 font-sans text-[12px] leading-snug text-[var(--color-ink-2)]">“{r.reasoningExcerpt}”</p>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
@@ -150,18 +204,13 @@ function Row({ c, label, v, n, pct, bold }: { c: string; label: string; v: numbe
   return (
     <div className="flex items-center gap-3">
       <span className="h-3 w-3 shrink-0 rounded-sm" style={{ background: c }} />
-      <span className="flex-1 font-sans text-[13px]" style={{ color: bold ? "var(--color-ink)" : "var(--color-ink-2)", fontWeight: bold ? 600 : 400 }}>
-        {label}
-      </span>
+      <span className="flex-1 font-sans text-[13px]" style={{ color: bold ? "var(--color-ink)" : "var(--color-ink-2)", fontWeight: bold ? 600 : 400 }}>{label}</span>
       <span className="font-mono text-[11px] text-[var(--color-ink-3)]">{v}/{n}</span>
-      <span className="tnum w-10 text-right font-mono text-[13px] font-bold" style={{ color: bold ? "var(--color-yc-deep)" : "var(--color-ink-2)" }}>
-        {pct}%
-      </span>
+      <span className="tnum w-10 text-right font-mono text-[13px] font-bold" style={{ color: bold ? "var(--color-yc-deep)" : "var(--color-ink-2)" }}>{pct}%</span>
     </div>
   );
 }
 
 function Bar({ v, n, c }: { v: number; n: number; c: string }) {
-  const w = n ? (v / n) * 100 : 0;
-  return <div style={{ width: `${w}%`, background: c }} />;
+  return <div style={{ width: `${n ? (v / n) * 100 : 0}%`, background: c }} />;
 }

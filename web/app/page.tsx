@@ -6,12 +6,10 @@ import { LandingHero } from "@/components/LandingHero";
 import { DemoConsole } from "@/components/DemoConsole";
 import { Observability } from "@/components/Observability";
 import { AgentsPanel } from "@/components/AgentsPanel";
-import { UsageGauge } from "@/components/UsageGauge";
 import { Pipeline } from "@/components/Pipeline";
 import { ToolRecommendation } from "@/components/ToolRecommendation";
 import { MathPanel } from "@/components/MathPanel";
 import { DiagnosisPanel } from "@/components/DiagnosisPanel";
-import { ChangeLog } from "@/components/ChangeLog";
 import { ClimbChart } from "@/components/ClimbChart";
 import { Panel } from "@/components/ui";
 
@@ -40,23 +38,7 @@ export default function Page() {
           <DemoConsole />
         </section>
 
-        {/* THE RESULT — gauge */}
-        <section className="mt-10 grid items-center gap-6 rounded-2xl border border-[var(--color-line)] bg-white p-8 lg:grid-cols-[360px_1fr]">
-          <UsageGauge />
-          <div>
-            <h2 className="font-display text-[26px] font-semibold tracking-tight text-[var(--color-ink)]">
-              One number that moves real agent behavior.
-            </h2>
-            <p className="mt-3 max-w-[520px] font-sans text-[15px] leading-relaxed text-[var(--color-ink-2)]">
-              Usage rate is the share of agent runs that pick <em>and</em> call OrangeSlice for the
-              job. It is measured on held-out phrasings with OpenAI agents, a competitor held flat as
-              a control. Hit <span className="font-medium text-[var(--color-ink)]">Run test</span>{" "}
-              and watch it climb as the footprint is rewritten.
-            </p>
-          </div>
-        </section>
-
-        {/* OBSERVABILITY */}
+        {/* OBSERVABILITY (gauge lives inside) */}
         <section id="observability" className="mt-10 scroll-mt-20">
           <Panel label="Observability" hint="what AI agents reach for, measured" live>
             <Observability />
@@ -102,13 +84,6 @@ export default function Page() {
         <section id="proof" className="mt-10 scroll-mt-20">
           <Panel label="Proof" hint="usage over versions as the footprint is rewritten">
             <ClimbChart />
-          </Panel>
-        </section>
-
-        {/* HISTORY */}
-        <section className="mt-10">
-          <Panel label="Change-log" hint="every rewrite of your door, with the reason">
-            <ChangeLog />
           </Panel>
         </section>
 

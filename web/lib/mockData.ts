@@ -55,17 +55,19 @@ export const TOTAL_VERSIONS = 3;
 const RUNS_PER_CELL = 10; // runs per (version × model × phrasing)
 
 // distribution of chosen tool per version, per model: [OS, competitor, DIY]
-// OS climbs, competitor held ~flat (the control), DIY collapses.
+// REALISTIC: agents default to their own tools. Optimization wins a real but
+// modest share; do-it-yourself stays dominant. Competitor held ~flat (control).
 const DIST: Record<ModelId, Record<number, [number, number, number]>> = {
-  gpt: { 1: [0.08, 0.18, 0.74], 2: [0.34, 0.17, 0.49], 3: [0.71, 0.16, 0.13] },
-  claude: { 1: [0.1, 0.18, 0.72], 2: [0.3, 0.18, 0.52], 3: [0.66, 0.17, 0.17] },
+  gpt: { 1: [0.05, 0.1, 0.85], 2: [0.16, 0.1, 0.74], 3: [0.31, 0.09, 0.6] },
+  claude: { 1: [0.04, 0.1, 0.86], 2: [0.13, 0.1, 0.77], 3: [0.27, 0.09, 0.64] },
 };
 
-// when the agent did it itself, WHY (failure tag mix shifts as we optimize)
+// when the agent did it itself, WHY. "I can do this myself" is the hard ceiling
+// and stays the top reason: agents prefer their own general-purpose tools.
 const DIY_TAGS: Record<number, [FailureTag, number][]> = {
-  1: [["not_found", 0.55], ["desc_vague", 0.35], ["i_can_do_this_myself", 0.07], ["auth_friction", 0.03]],
-  2: [["not_found", 0.12], ["desc_vague", 0.4], ["i_can_do_this_myself", 0.33], ["auth_friction", 0.15]],
-  3: [["not_found", 0.03], ["desc_vague", 0.12], ["i_can_do_this_myself", 0.55], ["auth_friction", 0.3]],
+  1: [["not_found", 0.35], ["desc_vague", 0.25], ["i_can_do_this_myself", 0.35], ["auth_friction", 0.05]],
+  2: [["not_found", 0.1], ["desc_vague", 0.25], ["i_can_do_this_myself", 0.55], ["auth_friction", 0.1]],
+  3: [["not_found", 0.03], ["desc_vague", 0.1], ["i_can_do_this_myself", 0.72], ["auth_friction", 0.15]],
 };
 
 // fraction of OS-chosen runs that still fail at the execution gate (auth)
@@ -218,7 +220,7 @@ export const DESCRIPTIONS: Description[] = [
     name: "OrangeSlice",
     description:
       "OrangeSlice is a spreadsheet tool for sales teams. Organize your prospects and track outreach in one place.",
-    schema: "—",
+    schema: "",
     changeReason: "Baseline — OrangeSlice's current public agent-facing footprint, untouched.",
   },
   {
