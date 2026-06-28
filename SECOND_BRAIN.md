@@ -1,4 +1,4 @@
-# AETHER — SECOND BRAIN (Master Doc: Context + PRD + Build Plan)
+# Hello, we are at the hackathon today. Our project is aether. Use the aether.md file to get our full blueprint. Then guide us through the entire thing. Make sure we understand every single thing. Go from top to bottom. Take your time to understand it and teach it in technical terms to us. After this we should be able to write the PRD, contracts and start building. Do not skip any details in the document. also if something is super technical dive deep and explain us those technical concepts. I should be an expert on this by the end of the conversation. I am Arav so explain me exactly what I am building and then what rithvik is building. (Master Doc: Context + PRD + Build Plan)
 *The single source of truth. If you are an agent or teammate opening this cold: read §0 → §3 → §9 → §10, then start. Everything we ever decided is here.*
 
 > **Owners:** Arav (backend / AI / ML — the engine) · Rithvik (frontend / design — dashboard + video).
@@ -196,3 +196,24 @@ scores        { id, descriptionVersion, model, job, usageRate: number, n: number
 
 ---
 *Status: everything locked. Build now (§10). This file is the brain — keep it updated as the single source of truth.*
+
+---
+
+## 17. THE AETHER SWARM (the AI-native org roster)
+The company = a swarm of agents that replaces a human SEO/GEO agency. **Two kinds of agents — never mix them up:**
+- **Our employees** = the optimization swarm (below) — they do the work.
+- **NOT ours** = the "judge" agents in the wind tunnel (GPT/Claude playing *Johnny's agent*). We **measure** them; they must stay clean/untouched.
+
+**The swarm (each replaces a human agency role):**
+- 🔭 **Scout (Task Mapper)** — the jobs an ICP hands an agent that the customer can do, + the phrasings to test. *Replaces: strategist.* → `config.ts`
+- 🌬️ **Prober (Wind-Tunnel Operator)** — runs the judge-agents on the task many times, records what each picked/called. *Replaces: QA/testing analyst.* → `windtunnel.ts`
+- 🩺 **Diagnostician (Labeler)** — reads each run's reasoning, tags **why the customer lost** (`desc_vague`, `i_can_do_this_myself`, `picked_competitor`, `not_found`). *Replaces: data analyst.* → labeler in `optimizer.ts`
+- ✍️ **Optimizer (Copywriter)** — rewrites the customer's door/footprint (description v2→v3) to fix the top failure. *Replaces: SEO/GEO copywriter.* → `optimizer.ts`
+- 🛡️ **Fact-Checker (Honesty Guard)** — verifies every new claim is **true** (no "always use me" injection, no fake "#1"). *Replaces: legal/brand review.* → guardrail H5
+- 📊 **Scorer (Analyst)** — aggregates runs into the **usage rate**, computes lift, runs the train/test + competitor-control checks. *Replaces: metrics analyst.* → `scores`
+- 🚀 **Publisher (Deployer)** — pushes the optimized footprint to the customer's real surfaces. *Replaces: deployment/ops.* → *(prod; in demo = swaps the corpus/description)*
+- 👁️ **Monitor (Drift Watcher)** — re-runs forever as models update + rivals change, re-triggers the loop. *Replaces: ongoing account manager.* → *(the "always-on" part)*
+
+**The loop:** Scout picks the job → Prober runs it → Diagnostician finds why we lost → Optimizer rewrites the door → Fact-Checker approves → Prober re-runs → Scorer proves the lift → Publisher ships it → Monitor watches for drift → repeat.
+
+**Built for the 6-hour demo:** Prober, Diagnostician, Optimizer, Scorer (+ light Fact-Checker). **Pitch-only (described, not built):** Scout, Publisher, Monitor — the "runs forever, per customer, no humans" story.
