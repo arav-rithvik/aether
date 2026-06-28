@@ -15,17 +15,26 @@ export function Panel({
   live?: boolean;
 }) {
   return (
-    <section className={`panel relative flex flex-col ${className}`}>
+    <section className={`relative flex flex-col rounded-2xl border border-[var(--color-line)] bg-white p-6 ${className}`}>
       {(label || hint) && (
-        <header className="flex items-center justify-between gap-3 px-5 pt-4 pb-3">
-          <div className="flex items-center gap-2">
-            {live && <span className="live-dot inline-block h-1.5 w-1.5 rounded-full bg-[var(--color-yc)]" />}
-            <span className="eyebrow">{label}</span>
+        <header className="mb-5 flex items-start justify-between gap-3">
+          <div>
+            <h2 className="font-display text-[17px] font-semibold tracking-tight text-[var(--color-ink)]">
+              {label}
+            </h2>
+            {hint && (
+              <p className="mt-0.5 font-sans text-[12.5px] text-[var(--color-ink-3)]">{hint}</p>
+            )}
           </div>
-          {hint && <span className="eyebrow !tracking-normal !lowercase text-[var(--color-ink-3)]">{hint}</span>}
+          {live && (
+            <span className="mt-1 inline-flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-wide text-[var(--color-ink-3)]">
+              <span className="live-dot inline-block h-1.5 w-1.5 rounded-full bg-[var(--color-yc)]" />
+              live
+            </span>
+          )}
         </header>
       )}
-      <div className="flex-1 px-5 pb-5">{children}</div>
+      <div className="flex-1">{children}</div>
     </section>
   );
 }

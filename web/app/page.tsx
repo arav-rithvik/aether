@@ -61,9 +61,9 @@ export default function Page() {
   return (
     <AetherProvider>
       <StatusRail />
-      <main className="mx-auto w-full max-w-[1240px] flex-1 px-5 pb-16">
+      <main className="mx-auto w-full max-w-[1240px] flex-1 px-5 pb-24">
         {/* HERO */}
-        <section className="relative mt-6 overflow-hidden rounded-2xl border border-[var(--color-line)] bg-[var(--color-panel)] p-6">
+        <section className="relative mt-8 overflow-hidden rounded-2xl border border-[var(--color-line)] bg-[var(--color-panel)] p-6">
           <div aria-hidden className="grid-floor pointer-events-none absolute inset-0" />
           <div className="relative grid gap-6 lg:grid-cols-[1fr_360px]">
             <div className="flex flex-col">
@@ -94,21 +94,21 @@ export default function Page() {
         </section>
 
         {/* THE ALGORITHM */}
-        <section className="mt-5">
+        <section className="mt-10">
           <Panel label="The algorithm" hint="the closed loop, end to end" live>
             <Pipeline />
           </Panel>
         </section>
 
         {/* THE RECOMMENDATION */}
-        <section className="mt-5">
+        <section className="mt-10">
           <Panel label="The recommendation" hint="what the engine changes on your door">
             <ToolRecommendation />
           </Panel>
         </section>
 
         {/* MATH + ENGINE STATS */}
-        <section className="mt-5 grid items-start gap-5 lg:grid-cols-2">
+        <section className="mt-10 grid items-start gap-6 lg:grid-cols-2">
           <Panel label="The math" hint="every % traced to raw counts">
             <MathPanel />
           </Panel>
@@ -118,7 +118,7 @@ export default function Page() {
         </section>
 
         {/* WHY REJECTED + CORPUS */}
-        <section className="mt-5 grid items-start gap-5 lg:grid-cols-2">
+        <section className="mt-10 grid items-start gap-6 lg:grid-cols-2">
           <Panel label="Why agents reject you" hint="tagged from real reasoning" live>
             <DiagnosisPanel />
           </Panel>
@@ -128,7 +128,7 @@ export default function Page() {
         </section>
 
         {/* PROOF: CLIMB + FUNNEL */}
-        <section className="mt-5 grid items-start gap-5 lg:grid-cols-2">
+        <section className="mt-10 grid items-start gap-6 lg:grid-cols-2">
           <Panel label="Proof" hint="usage over versions, two models">
             <ClimbChart />
           </Panel>
@@ -138,7 +138,7 @@ export default function Page() {
         </section>
 
         {/* HISTORY */}
-        <section className="mt-5">
+        <section className="mt-10">
           <Panel label="Change-log" hint="every rewrite of your door, with the reason">
             <ChangeLog />
           </Panel>

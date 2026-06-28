@@ -1,5 +1,4 @@
 "use client";
-import { motion } from "framer-motion";
 import {
   engineStats,
   failureBreakdown,
@@ -16,99 +15,75 @@ export function Pipeline() {
   const m = mathFor(model, version);
   const bd = failureBreakdown(model, version);
   const topTag = (Object.keys(bd) as FailureTag[]).sort((a, b) => bd[b] - bd[a])[0];
-  const nextV = Math.min(version + 1, TOTAL_VERSIONS);
   const converged = version >= TOTAL_VERSIONS;
+  const nextV = Math.min(version + 1, TOTAL_VERSIONS);
   const lift = Math.round((scoreOf(model, version).usageRate - scoreOf(model, 1).usageRate) * 100);
 
-  const stages = [
-    {
-      n: "01",
-      key: "phrasings",
-      title: "Phrasings",
-      does: "One job, many ways to ask it. Train set the optimizer sees; held-out set it never does.",
-      metric: `${s.phrasings} phrasings`,
-      sub: `${s.trainN} train · ${s.testN} held-out`,
-    },
-    {
-      n: "02",
-      key: "tunnel",
-      title: "Wind tunnel",
-      does: "Run a real agent on each phrasing with your API, a rival, and do-it-yourself on the table.",
-      metric: `${m.n} runs`,
-      sub: `${s.perCell}× per phrasing · ${s.models} models`,
-    },
-    {
-      n: "03",
-      key: "diagnose",
-      title: "Diagnose",
-      does: "A labeler reads each run's reasoning and tags why the agent didn't pick you.",
-      metric: FAILURE_LABEL[topTag],
-      sub: `top reason · ${bd[topTag]} runs`,
-    },
-    {
-      n: "04",
-      key: "optimize",
-      title: "Optimize",
-      does: "Rewrite your tool description to kill the top reason. Truthful claims only.",
-      metric: converged ? "converged" : `v${version} → v${nextV}`,
-      sub: converged ? "no reason left to fix" : "1 change, annotated",
-    },
-    {
-      n: "05",
-      key: "prove",
-      title: "Re-prove",
-      does: "Re-run on held-out phrasings. If usage climbs and the control stays flat, it was real.",
-      metric: `${Math.round(m.rate * 100)}% used`,
-      sub: lift > 0 ? `+${lift} pts vs v1` : "baseline",
-    },
+  const steps = [
+    { phase: "Measure", title: "Ingest the job", desc: "Capture the job and ICP the customer wants agents to use them for.", metric: "1 job" },
+    { phase: "Measure", title: "Generate phrasings", desc: "Derive the many ways an agent might be asked — split train vs held-out.", metric: `${s.phrasings} phrasings` },
+    { phase: "Measure", title: "Assemble the toolset", desc: "Put your API, a real rival, and do-it-yourself on the table.", metric: "3 tools" },
+    { phase: "Measure", title: "Build the corpus", desc: "The controlled search surface the agent retrieves from.", metric: version === 1 ? "weak" : "optimized" },
+    { phase: "Measure", title: "Run the wind tunnel", desc: "Execute a real agent on every phrasing × model × repeat.", metric: `${m.n} runs` },
+    { phase: "Measure", title: "Capture the funnel", desc: "Record candidacy → selection → execution for each run.", metric: `${m.candidacy}/${m.n} found` },
+    { phase: "Diagnose", title: "Tag the rejections", desc: "A labeler reads each run's reasoning and tags why you lost.", metric: `${FAILURE_LABEL[topTag]} ·${bd[topTag]}` },
+    { phase: "Optimize", title: "Rewrite the footprint", desc: "Propose one truthful change to your tool description for the top reason.", metric: converged ? "converged" : `v${version}→v${nextV}` },
+    { phase: "Optimize", title: "Guardrail check", desc: "Auto-check the rewrite: truthful, schema-valid, no tool-poisoning.", metric: "3/3 pass" },
+    { phase: "Prove", title: "Re-prove on held-out", desc: "Re-run phrasings the optimizer never saw; confirm the control stays flat.", metric: lift > 0 ? `${Math.round(m.rate * 100)}% ·+${lift}` : `${Math.round(m.rate * 100)}%` },
   ];
+
+  const phaseColor: Record<string, string> = {
+    Measure: "var(--color-steel)",
+    Diagnose: "var(--color-bad)",
+    Optimize: "var(--color-yc)",
+    Prove: "var(--color-good)",
+  };
 
   return (
     <div>
-      <div className="mb-4 flex flex-wrap items-baseline justify-between gap-2">
-        <p className="max-w-[680px] font-sans text-[13px] text-[var(--color-ink-2)]">
-          A closed loop, per customer, per job. It measures real agent behavior, finds why you lose,
-          rewrites your footprint, and proves the lift — then repeats as models drift.
-        </p>
-        <span className="eyebrow">iteration {version} / {TOTAL_VERSIONS}</span>
-      </div>
+      <p className="mb-6 max-w-[640px] font-sans text-[14px] leading-relaxed text-[var(--color-ink-2)]">
+        A closed loop, per customer, per job. It measures real agent behavior, finds why you lose,
+        rewrites your footprint, and proves the lift — then repeats as models drift.
+      </p>
 
-      <div className="grid gap-2.5 md:grid-cols-5">
-        {stages.map((st, i) => {
-          return (
-            <motion.div
-              key={st.key}
-              initial={{ opacity: 0, y: 8 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.3, delay: i * 0.05 }}
-              className="relative flex flex-col rounded-xl border border-[var(--color-line)] bg-white p-3.5"
-            >
-              <div className="flex items-center justify-between">
-                <span className="font-mono text-[11px] font-bold text-[var(--color-yc)]">{st.n}</span>
-                {i < stages.length - 1 && (
-                  <span className="hidden text-[var(--color-line-2)] md:inline">→</span>
-                )}
+      <ol className="grid gap-x-10 gap-y-0 sm:grid-cols-2">
+        {steps.map((st, i) => (
+          <li
+            key={st.title}
+            className="flex items-baseline gap-4 border-t border-[var(--color-line)] py-3.5 first:border-t-0 sm:[&:nth-child(2)]:border-t-0"
+          >
+            <span className="tnum w-6 shrink-0 font-mono text-[12px] text-[var(--color-ink-3)]">
+              {String(i + 1).padStart(2, "0")}
+            </span>
+            <div className="min-w-0 flex-1">
+              <div className="flex items-center gap-2">
+                <span
+                  className="h-1.5 w-1.5 shrink-0 rounded-full"
+                  style={{ background: phaseColor[st.phase] }}
+                />
+                <span className="font-display text-[15px] font-semibold text-[var(--color-ink)]">
+                  {st.title}
+                </span>
               </div>
-              <div className="mt-1 font-display text-[15px] font-semibold text-[var(--color-ink)]">
-                {st.title}
-              </div>
-              <p className="mt-1 flex-1 font-sans text-[11.5px] leading-snug text-[var(--color-ink-3)]">
-                {st.does}
+              <p className="mt-0.5 font-sans text-[12.5px] leading-snug text-[var(--color-ink-3)]">
+                {st.desc}
               </p>
-              <div className="mt-2.5 border-t border-[var(--color-line)] pt-2">
-                <div className="tnum font-mono text-[15px] font-bold text-[var(--color-ink)]">
-                  {st.metric}
-                </div>
-                <div className="font-mono text-[10px] text-[var(--color-ink-3)]">{st.sub}</div>
-              </div>
-            </motion.div>
-          );
-        })}
-      </div>
+            </div>
+            <span className="tnum shrink-0 whitespace-nowrap font-mono text-[12px] font-semibold text-[var(--color-ink-2)]">
+              {st.metric}
+            </span>
+          </li>
+        ))}
+      </ol>
 
-      <div className="mt-2.5 flex items-center gap-2 font-mono text-[10.5px] text-[var(--color-ink-3)]">
-        <span className="text-[var(--color-yc)]">↺</span>
-        loop closes here — re-feeds stage 02 each iteration until no rejection reason is worth fixing.
+      <div className="mt-6 flex flex-wrap items-center justify-between gap-2 border-t border-[var(--color-line)] pt-4">
+        <span className="flex items-center gap-2 font-sans text-[12px] text-[var(--color-ink-3)]">
+          <span className="text-[var(--color-yc)]">↺</span>
+          loops back to step 05 each iteration — until no rejection reason is worth fixing.
+        </span>
+        <span className="font-mono text-[11px] text-[var(--color-ink-3)]">
+          iteration {version} / {TOTAL_VERSIONS}
+        </span>
       </div>
     </div>
   );
