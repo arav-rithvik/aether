@@ -12,5 +12,5 @@ export const TEST_PHRASINGS = [
   "grow my pipeline this quarter", // indirect — agent must infer the task
 ];
 
-export const MODELS = ["gpt-4o", "claude-3-5-sonnet"] as const; // 2nd model = generalization proof
+export const MODELS = ["gpt-4o-mini", "gpt-4o"] as const; // mini = cheap high-volume, 4o = frontier
 export const RUNS_PER_PHRASING = 10;

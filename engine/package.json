@@ -4,6 +4,7 @@
   "type": "module",
   "scripts": {
     "tunnel": "tsx src/windtunnel.ts",
+    "tunnel:smoke": "tsx src/windtunnel.ts --smoke",
     "optimize": "tsx src/optimizer.ts"
   },
   "dependencies": {
