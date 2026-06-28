@@ -22,7 +22,7 @@ function LiveData() {
     const valid =
       Array.isArray(runs) &&
       runs.length >= 50 &&
-      runs.some((r) => r.model === "gpt" && typeof r.descriptionVersion === "number") &&
+      runs.some((r) => r.model === "gpt-4o" && typeof r.descriptionVersion === "number") &&
       Array.isArray(scores) &&
       scores.length >= 1;
     if (valid) {

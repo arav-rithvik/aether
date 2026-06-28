@@ -114,7 +114,7 @@ export function UsageGauge() {
 
       <div className="mt-3 flex items-center gap-2 font-mono text-[11px] text-[var(--color-ink-3)]">
         <span className="h-2 w-2 rounded-full" style={{ background: "var(--color-steel-2)" }} />
-        Claude and Cursor agents coming soon · same engine, same data
+        GPT-4o and GPT-4o-mini · same engine, same data
       </div>
     </div>
   );

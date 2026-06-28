@@ -17,7 +17,7 @@ export default function AgentsPage() {
           </h1>
           <p className="mx-auto mt-4 max-w-[560px] font-sans text-[16px] leading-relaxed text-[var(--color-ink-2)]">
             Aether runs real agents with your own keys. Connect a model to test how its agents behave
-            on your footprint. OpenAI is live today; Claude and Cursor land next on the same engine.
+            on your footprint. GPT-4o and GPT-4o-mini are both live on the same engine.
           </p>
         </section>
 

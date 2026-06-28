@@ -5,11 +5,11 @@ import { FAILURE_LABEL, isCompetitor, Run, toolLabel } from "@/lib/schema";
 import { SPONSORS } from "@/lib/mockData";
 import { OrangeSliceMark } from "./OrangeSliceMark";
 
-// A test fires 100 runs: every phrasing, repeated, across models. OpenAI is
-// live today; Claude rows preview how it runs once that API is wired.
+// A test fires 100 runs: every phrasing, repeated, across models.
+// GPT-4o and GPT-4o-mini rows are both live.
 function testBatch(version: number): Run[] {
-  const g = runsFor("gpt", version);
-  const c = runsFor("claude", version);
+  const g = runsFor("gpt-4o", version);
+  const c = runsFor("gpt-4o-mini", version);
   const out: Run[] = [];
   for (let i = 0; i < Math.max(g.length, c.length); i++) {
     if (g[i]) out.push(g[i]);
@@ -76,7 +76,7 @@ export function DemoConsole() {
             Test: does an agent pick OrangeSlice?
           </div>
           <div className="truncate font-mono text-[11.5px] text-[var(--color-ink-3)]">
-            runs automatically · re-tests as models drift · OpenAI agents · Claude and Cursor soon
+            runs automatically · re-tests as models drift · GPT-4o · GPT-4o-mini agents
           </div>
         </div>
 
@@ -169,7 +169,7 @@ export function DemoConsole() {
               <span className="font-mono text-[11px] text-[var(--color-ink-3)]">{shown.length - i}</span>
               <span className="truncate font-sans text-[var(--color-ink)]">{r.phrasing}</span>
               <span className="font-mono text-[11px] text-[var(--color-ink-2)]">
-                {r.model === "gpt" ? "OpenAI" : "Claude"}
+                {r.model === "gpt-4o" ? "GPT-4o" : "GPT-4o-mini"}
               </span>
               <span className="flex items-center gap-1.5">
                 <span

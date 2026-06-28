@@ -6,7 +6,7 @@
 // with no component changes.
 // ============================================================
 
-export type ModelId = "gpt" | "claude";
+export type ModelId = "gpt-4o" | "gpt-4o-mini";
 export type Split = "train" | "test";
 export type FunnelStage = "candidacy" | "selection" | "execution";
 export type CorpusVersion = "weak" | "optimized";
@@ -106,8 +106,8 @@ export interface Score {
 }
 
 export const MODELS: { id: ModelId; label: string; vendor: string; soon?: boolean }[] = [
-  { id: "gpt", label: "OpenAI", vendor: "OpenAI" },
-  { id: "claude", label: "Claude", vendor: "Anthropic", soon: true },
+  { id: "gpt-4o", label: "GPT-4o", vendor: "OpenAI" },
+  { id: "gpt-4o-mini", label: "GPT-4o-mini", vendor: "OpenAI" },
 ];
 
 export const JOB = "find high-intent buyers and start outreach";

@@ -59,8 +59,8 @@ const RUNS_PER_CELL = 10; // runs per (version × model × phrasing)
 // REALISTIC: agents default to their own tools. Optimization wins a real but
 // modest share; do-it-yourself stays dominant. Competitor held ~flat (control).
 const DIST: Record<ModelId, Record<number, [number, number, number]>> = {
-  gpt: { 1: [0.05, 0.1, 0.85], 2: [0.16, 0.1, 0.74], 3: [0.31, 0.09, 0.6] },
-  claude: { 1: [0.04, 0.1, 0.86], 2: [0.13, 0.1, 0.77], 3: [0.27, 0.09, 0.64] },
+  "gpt-4o": { 1: [0.05, 0.1, 0.85], 2: [0.16, 0.1, 0.74], 3: [0.31, 0.09, 0.6] },
+  "gpt-4o-mini": { 1: [0.04, 0.1, 0.86], 2: [0.13, 0.1, 0.77], 3: [0.27, 0.09, 0.64] },
 };
 
 // when the agent did it itself, WHY. "I can do this myself" is the hard ceiling
@@ -106,7 +106,7 @@ const REASONS: Record<string, string[]> = {
 function tsBase(version: number, model: ModelId, i: number) {
   // deterministic, monotonic timestamps (no Date.now — keeps it reproducible)
   const base = 1_750_000_000_000;
-  const modelOff = model === "gpt" ? 0 : 5_000;
+  const modelOff = model === "gpt-4o" ? 0 : 5_000;
   return base + version * 1_000_000 + i * 800 + modelOff;
 }
 
@@ -114,12 +114,12 @@ export function generate() {
   const runs: Run[] = [];
   let runN = 0;
 
-  for (const model of ["gpt", "claude"] as ModelId[]) {
+  for (const model of ["gpt-4o", "gpt-4o-mini"] as ModelId[]) {
     for (let v = 1; v <= TOTAL_VERSIONS; v++) {
       const dist = DIST[model][v];
       let cellI = 0;
       for (const { text: phrasing, split } of PHRASINGS) {
-        const r = rng(1000 * v + (model === "gpt" ? 1 : 2) * 100 + cellI);
+        const r = rng(1000 * v + (model === "gpt-4o" ? 1 : 2) * 100 + cellI);
         for (let k = 0; k < RUNS_PER_CELL; k++) {
           const tool = weighted<string>(r, [
             ["orangeslice", dist[0]],
@@ -190,7 +190,7 @@ export function generate() {
 
   // scores: computed from runs (NOT hardcoded) — usageRate = OS used / n
   const scores: Score[] = [];
-  for (const model of ["gpt", "claude"] as ModelId[]) {
+  for (const model of ["gpt-4o", "gpt-4o-mini"] as ModelId[]) {
     for (let v = 1; v <= TOTAL_VERSIONS; v++) {
       const cell = runs.filter((x) => x.model === model && x.descriptionVersion === v);
       const used = cell.filter((x) => x.chosenTool === "orangeslice" && x.returnedUsableData).length;

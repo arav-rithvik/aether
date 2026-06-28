@@ -187,7 +187,7 @@ export function Observability() {
                   return (
                     <div key={r.id} className="rounded-lg border border-[var(--color-line)] px-3 py-2" style={{ background: won ? "var(--color-yc-wash)" : "white" }}>
                       <div className="flex items-center justify-between gap-2">
-                        <span className="font-mono text-[11px] text-[var(--color-ink-3)]">run {i + 1} · {r.model === "gpt" ? "OpenAI" : "Claude"}</span>
+                        <span className="font-mono text-[11px] text-[var(--color-ink-3)]">run {i + 1} · {r.model === "gpt-4o" ? "GPT-4o" : "GPT-4o-mini"}</span>
                         <span className="font-mono text-[10px] font-semibold uppercase" style={{ color: won ? "var(--color-yc-deep)" : "var(--color-ink-2)" }}>
                           {r.chosenTool === "orangeslice" ? "used you" : toolLabel(r.chosenTool)} · {r.failureTag ? FAILURE_LABEL[r.failureTag] : "execution"}
                         </span>

@@ -29,6 +29,20 @@ export const getRuns = query({
   },
 });
 
+export const getLosingRuns = query({
+  args: { descriptionVersion: v.number() },
+  handler: async (ctx, args) => {
+    const rows = await ctx.db
+      .query("runs")
+      .withIndex("by_desc_model", (q) => q.eq("descriptionVersion", args.descriptionVersion))
+      .collect();
+    // Filter train-split losses client-side (chosenTool and split not in index)
+    return rows.filter(
+      (r) => r.split === "train" && r.chosenTool !== "orangeslice" && r.chosenTool !== "ERROR"
+    );
+  },
+});
+
 export const getCorpus = query({
   args: { version: v.optional(v.union(v.literal("weak"), v.literal("optimized"))) },
   handler: async (ctx, args) => {

@@ -10,7 +10,7 @@ export function EngineStats() {
     { v: s.totalRuns, label: "agent runs", sub: `${s.perCell}× per cell` },
     { v: s.agentCalls, label: "LLM calls", sub: "runs + tagger + rewrite" },
     { v: s.phrasings, label: "phrasings", sub: `${s.trainN} train · ${s.testN} held-out` },
-    { v: "1", label: "live model", sub: "OpenAI · Claude soon" },
+    { v: "2", label: "live models", sub: "GPT-4o · GPT-4o-mini" },
     { v: 3, label: "tools on table", sub: "you · rival · DIY" },
   ];
 

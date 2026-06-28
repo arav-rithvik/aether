@@ -13,7 +13,7 @@ export function AetherProvider({ children }: { children: React.ReactNode }) {
   useSyncExternalStore(subscribeLive, getLive, () => null);
 
   const [version, setVersionRaw] = useState(1);
-  const [model, setModel] = useState<ModelId>("gpt");
+  const [model, setModel] = useState<ModelId>("gpt-4o");
   const [playing, setPlaying] = useState(false);
   const [feed, setFeed] = useState<Run[]>([]);
 

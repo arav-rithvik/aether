@@ -70,6 +70,16 @@ export const insertDescription = mutation({
   },
 });
 
+export const setRunFailureTag = mutation({
+  args: {
+    id:         v.id("runs"),
+    failureTag: v.string(),
+  },
+  handler: async (ctx, args) => {
+    await ctx.db.patch(args.id, { failureTag: args.failureTag });
+  },
+});
+
 export const setCorpus = mutation({
   args: {
     version: v.union(v.literal("weak"), v.literal("optimized")),

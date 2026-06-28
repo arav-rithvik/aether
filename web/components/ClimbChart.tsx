@@ -22,7 +22,7 @@ function series(fn: (v: number) => number) {
 
 export function ClimbChart() {
   const { version, model } = useAether();
-  const other: ModelId = model === "gpt" ? "claude" : "gpt";
+  const other: ModelId = model === "gpt-4o" ? "gpt-4o-mini" : "gpt-4o";
 
   const primary = series((v) => scoreOf(model, v).usageRate);
   const secondary = series((v) => scoreOf(other, v).usageRate);
@@ -36,7 +36,7 @@ export function ClimbChart() {
       <p className="font-sans text-[13px] text-[var(--color-ink-2)]">
         Same job, same held-out phrasings. Only your footprint changed.{" "}
         <span className="text-[var(--color-ink)]">Usage climbs for OpenAI agents while the competitor stays flat as a control.</span>{" "}
-        Claude and Cursor agents are next on the same engine.
+        Both GPT-4o and GPT-4o-mini agents are measured on the same engine.
       </p>
 
       <svg viewBox={`0 0 ${W} ${H}`} className="mt-2 w-full" style={{ maxHeight: 170 }}>
@@ -83,8 +83,8 @@ export function ClimbChart() {
       </svg>
 
       <div className="mt-auto flex flex-wrap items-center gap-x-4 gap-y-1 pt-2 font-mono text-[10px] text-[var(--color-ink-3)]">
-        <Legend color="var(--color-yc)" label="OpenAI (live)" />
-        <Legend color="#FFB37A" label="Claude (coming soon)" />
+        <Legend color="var(--color-yc)" label="GPT-4o" />
+        <Legend color="#FFB37A" label="GPT-4o-mini" />
         <Legend color="var(--color-steel)" label="Competitor (control)" dash />
       </div>
     </div>

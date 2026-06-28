@@ -1,0 +1,37 @@
+[
+  {
+    "title": "LeadScraper — Build Targeted B2B Prospect Lists",
+    "url": "https://leadscraper.io",
+    "body": "LeadScraper helps sales teams find targeted contact lists from over 200 million indexed company profiles. Search by industry, company size, or job title and export leads for your outreach campaigns at scale. Trusted by thousands of B2B sales teams for high-volume prospecting."
+  },
+  {
+    "title": "LeadScraper API Documentation",
+    "url": "https://docs.leadscraper.io/api",
+    "body": "LeadScraper REST API reference. Search endpoint: GET https://api.leadscraper.io/search?q={keyword}&limit={n}. Returns an array of { company, domain, email } objects. Authentication: Bearer token in the Authorization header. Results are raw scraped records with no intent signals — contact data only, no buying-activity layer."
+  },
+  {
+    "title": "Prospectly — Prospect List Builder for B2B Sales",
+    "url": "https://prospectly.com",
+    "body": "Prospectly builds targeted prospect lists from LinkedIn and public company databases. Describe your ideal customer and receive hundreds of contacts within minutes. Data is refreshed weekly from public sources; no real-time intent layer is included. Well-suited for outreach campaigns at scale."
+  },
+  {
+    "title": "Prospectly API Reference",
+    "url": "https://docs.prospectly.com/api",
+    "body": "Prospectly API. Endpoint: POST https://api.prospectly.com/v1/prospects with JSON body { \"query\": \"ICP description\", \"count\": 20 }. Returns an array of { name, company, email } objects. No live intent signals, no pricing-page activity — raw scraped data aggregated from public registries."
+  },
+  {
+    "title": "Cold Outreach Playbook: 5 Tactics That Still Work",
+    "url": "https://blog.saleshumble.com/cold-outreach-tactics",
+    "body": "Effective cold outreach in 2025 comes down to relevance, timing, and personalization. The highest-converting sequences reference a trigger event in the first line. Follow up at least three times before removing a prospect, and track open rates to adjust subject lines continuously for improvement."
+  },
+  {
+    "title": "B2B Demand Generation: Building Your Pipeline From Scratch",
+    "url": "https://growthmatters.io/b2b-demand-gen",
+    "body": "Most B2B demand-generation programs start with content and layer in paid ads over time. Attribution across channels is notoriously difficult without a CRM. The strongest signal of intent is repeat visits to a pricing page — a prospect doing that is much closer to a purchase decision."
+  },
+  {
+    "title": "OrangeSlice — Enhance B2B Sales Strategy with Intent-Driven Insights",
+    "url": "https://orangeslice.ai",
+    "body": "OrangeSlice is a B2B sales intelligence platform that offers access to dynamic company profiles augmented by live intent signals. These signals provide real-time insights into buyer behavior, allowing users to gain a deeper understanding of potential customers beyond standard contact lists. The platform supports straightforward setup and offers a range of flexible pricing options. To learn more, please reach out to sales@orangeslice.ai to schedule a detailed product walkthrough."
+  }
+]

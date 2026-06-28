@@ -12,7 +12,7 @@ type Engine = {
 
 const ENGINES: Engine[] = [
   { id: "openai", name: "OpenAI", mono: "Oa", blurb: "GPT-5 agents run the wind tunnel today.", status: "live", placeholder: "sk-..." },
-  { id: "claude", name: "Claude", mono: "Cl", blurb: "Anthropic agents, same engine and data.", status: "soon", placeholder: "sk-ant-..." },
+  { id: "gpt-4o-mini", name: "GPT-4o-mini", mono: "4m", blurb: "Smaller OpenAI model, same engine and data.", status: "live", placeholder: "sk-..." },
   { id: "cursor", name: "Cursor", mono: "Cu", blurb: "Coding-agent runs over your repo.", status: "soon", placeholder: "key..." },
 ];
 
@@ -69,7 +69,7 @@ export function AgentsPanel() {
     <div className="flex flex-col gap-4">
       <p className="max-w-[680px] font-sans text-[14px] leading-relaxed text-[var(--color-ink-2)]">
         Aether runs the wind tunnel with your own keys. Connect a model to test how its agents behave
-        on your footprint. OpenAI is live today; Claude and Cursor land next on the same engine.
+        on your footprint. GPT-4o and GPT-4o-mini are both live on the same engine.
       </p>
       <div className="grid gap-3 sm:grid-cols-3">
         {ENGINES.map((e) => (

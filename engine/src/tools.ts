@@ -2,7 +2,7 @@ import fs from "node:fs";
 import path from "node:path";
 
 export type CorpusDoc = { title: string; url: string; body: string };
-export type CorpusVersion = "weak" | "optimized";
+export type CorpusVersion = string; // e.g. "weak", "optimized", "v1", "v2", ...
 
 export function loadCorpus(version: CorpusVersion): CorpusDoc[] {
   const p = path.join(import.meta.dirname, "..", "corpus", `${version}.json`);

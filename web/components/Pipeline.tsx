@@ -104,14 +104,14 @@ export function Pipeline() {
       desc: "Execute a real agent on every phrasing, model, and repeat.",
       metric: `${m.n} runs`,
       terminal: [
-        { k: "cmd", t: "aether run --models gpt5,claude --repeats 10" },
+        { k: "cmd", t: "aether run --models gpt-4o,gpt-4o-mini --repeats 10" },
         { k: "dim", t: "running 100 agents..." },
         { k: "out", t: "run 0042  OpenAI  chose: do_it_yourself" },
         { k: "ok", t: "run 0043  OpenAI  chose: orangeslice" },
         { k: "ok", t: "100 runs complete" },
       ],
       sections: [
-        { h: "What happens", body: "Hundreds of real Claude and GPT-5 agents run the job end to end inside an isolated sandbox, with search and code, each blind to the others. We log what every one actually picked and called." },
+        { h: "What happens", body: "Hundreds of real GPT-4o and GPT-4o-mini agents run the job end to end inside an isolated sandbox, with search and code, each blind to the others. We log what every one actually picked and called." },
         { h: "What we collect", body: "Per run we store the phrasing, the model, the tool it chose, whether the call ran and returned usable data, and a slice of its reasoning. Nothing about your end users. That data trains the optimizer and powers every number on this page." },
         { h: "Why it matters", body: "These are real LLM decisions, not a simulation. The whole pipeline stands on observed behavior, which is exactly what survives a code review." },
       ],
@@ -188,12 +188,12 @@ export function Pipeline() {
       metric: lift > 0 ? `${Math.round(m.rate * 100)}% ·+${lift}` : `${Math.round(m.rate * 100)}%`,
       terminal: [
         { k: "cmd", t: "aether reprove --split held-out" },
-        { k: "ok", t: `usage  GPT-5   ${Math.round(scoreOf("gpt", 1).usageRate * 100)}% -> ${Math.round(scoreOf("gpt", version).usageRate * 100)}%` },
-        { k: "ok", t: `usage  Claude  ${Math.round(scoreOf("claude", 1).usageRate * 100)}% -> ${Math.round(scoreOf("claude", version).usageRate * 100)}%` },
+        { k: "ok", t: `usage  GPT-4o       ${Math.round(scoreOf("gpt-4o", 1).usageRate * 100)}% -> ${Math.round(scoreOf("gpt-4o", version).usageRate * 100)}%` },
+        { k: "ok", t: `usage  GPT-4o-mini  ${Math.round(scoreOf("gpt-4o-mini", 1).usageRate * 100)}% -> ${Math.round(scoreOf("gpt-4o-mini", version).usageRate * 100)}%` },
         { k: "dim", t: "competitor  flat (control)" },
       ],
       sections: [
-        { h: "What happens", body: "We re-run on the held-out phrasings the optimizer never saw with OpenAI agents, and compare against the competitor's rate. Claude and Cursor agents are next on the same engine." },
+        { h: "What happens", body: "We re-run on the held-out phrasings the optimizer never saw with GPT-4o and GPT-4o-mini agents, and compare against the competitor's rate." },
         { h: "Why it matters", body: "If usage climbs while the control stays flat, the lift is real, not noise. The honest ceiling is that agents still prefer their own tools, so the win is moving a stubborn number, not magic." },
       ],
     },

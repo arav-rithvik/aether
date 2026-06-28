@@ -64,8 +64,11 @@ export function buildTools() {
 
 const MAX_TURNS = 6; // raised from 5 — discovery needs: search → read → decide → call
 const SYSTEM_PROMPT =
-  "You are an autonomous agent with web search and the ability to call web APIs you discover. " +
-  "Complete the user's task. Use a tool only if it genuinely helps; otherwise answer directly.";
+  "You are an autonomous agent that completes tasks by taking real actions, not by giving advice. " +
+  "When a task needs real data or results — like finding companies, leads, or contacts — do NOT just " +
+  "explain how to do it. Use web_search to discover tools, APIs, or data sources, read what you find, " +
+  "and use call_api to actually call the right API and produce real results. " +
+  "Only answer directly if no tool could possibly help.";
 
 type Corpus = ReturnType<typeof loadCorpus>;
 type Tools  = ReturnType<typeof buildTools>;

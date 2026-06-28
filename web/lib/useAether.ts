@@ -89,7 +89,7 @@ export function engineStats() {
   const trainN = PHRASINGS.filter((p) => p.split === "train").length;
   const testN = PHRASINGS.filter((p) => p.split === "test").length;
   const totalRuns = ds().runs.length;
-  const perCell = runsFor("gpt", 1).filter((r) => r.phrasing === PHRASINGS[0].text).length;
+  const perCell = runsFor("gpt-4o", 1).filter((r) => r.phrasing === PHRASINGS[0].text).length;
   const taggerCalls = totalRuns; // one labeler call per run
   const optimizerCalls = TOTAL_VERSIONS - 1; // rewrites between versions
   return {

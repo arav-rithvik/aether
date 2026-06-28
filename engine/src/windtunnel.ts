@@ -211,7 +211,10 @@ async function main() {
   });
 }
 
-main().catch((err) => {
-  console.error(err);
-  process.exit(1);
-});
+// Guard: only auto-run when this file is the CLI entry point, not when imported as a module.
+if (import.meta.url === `file://${process.argv[1]}`) {
+  main().catch((err) => {
+    console.error(err);
+    process.exit(1);
+  });
+}
