@@ -43,9 +43,9 @@ export function DemoConsole() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  function runTest() {
+  function runTest(v: number = version) {
     stop();
-    batch.current = testBatch(version);
+    batch.current = testBatch(v);
     setShown([]);
     setProgress(0);
     setStatus("running");
@@ -80,31 +80,27 @@ export function DemoConsole() {
           </div>
         </div>
 
-        {/* footprint version */}
-        <div className="flex items-center gap-0.5 rounded-lg border border-[var(--color-line)] p-0.5">
-          {Array.from({ length: TOTAL_VERSIONS }, (_, i) => i + 1).map((v) => (
-            <button
-              key={v}
-              onClick={() => setVersion(v)}
-              disabled={status === "running"}
-              className="rounded-md px-2 py-1 font-mono text-[11px] transition-colors disabled:opacity-50"
-              style={{
-                background: v === version ? "var(--color-panel-2)" : "transparent",
-                color: v === version ? "var(--color-ink)" : "var(--color-ink-3)",
-              }}
-            >
-              footprint v{v}
-            </button>
-          ))}
-        </div>
-
+        {/* autonomous chain-trigger status (also fires on click) */}
         <button
-          onClick={runTest}
+          onClick={() => runTest()}
           disabled={status === "running"}
-          className="inline-flex items-center gap-2 rounded-lg px-4 py-2 font-sans text-[13px] font-semibold text-white transition-opacity disabled:opacity-60"
+          className="inline-flex items-center gap-2 rounded-lg px-4 py-2 font-mono text-[12px] font-semibold text-white transition-opacity disabled:opacity-90"
           style={{ background: "var(--color-yc)" }}
         >
-          {status === "running" ? `running ${progress}/${total}…` : status === "done" ? "Run test again →" : "Run test →"}
+          {status === "running" ? `chain triggered · ${progress}/${total}` : "Waiting for Chain Trigger"}
+        </button>
+
+        {/* black demo button: steps the footprint and re-runs */}
+        <button
+          onClick={() => {
+            const nv = version >= TOTAL_VERSIONS ? 1 : version + 1;
+            setVersion(nv);
+            runTest(nv);
+          }}
+          disabled={status === "running"}
+          className="inline-flex items-center gap-2 rounded-lg bg-[var(--color-ink)] px-3.5 py-2 font-sans text-[13px] font-semibold text-white transition-opacity hover:opacity-90 disabled:opacity-40"
+        >
+          ▶ Demo
         </button>
       </div>
 
