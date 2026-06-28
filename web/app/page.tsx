@@ -1,6 +1,8 @@
 "use client";
 import { AetherProvider } from "@/lib/AetherProvider";
 import { StatusRail } from "@/components/StatusRail";
+import { LandingHero } from "@/components/LandingHero";
+import { DemoConsole } from "@/components/DemoConsole";
 import { UsageGauge } from "@/components/UsageGauge";
 import { Pipeline } from "@/components/Pipeline";
 import { ToolRecommendation } from "@/components/ToolRecommendation";
@@ -13,104 +15,54 @@ import { ClimbChart } from "@/components/ClimbChart";
 import { Funnel } from "@/components/Funnel";
 import { Panel } from "@/components/ui";
 
-function AaoArc() {
-  const steps = [
-    { y: "SEO", t: "ranked", d: "a human searches → a click", on: false },
-    { y: "GEO", t: "mentioned", d: "a human asks AI → a citation", on: false },
-    { y: "AAO", t: "used", d: "an agent does a task → a tool call", on: true },
-  ];
-  return (
-    <div className="flex flex-col gap-2">
-      {steps.map((s) => (
-        <div
-          key={s.y}
-          className="flex items-center gap-3 rounded-lg border px-3 py-2"
-          style={{
-            borderColor: s.on ? "var(--color-yc)" : "var(--color-line)",
-            background: s.on ? "var(--color-yc-wash)" : "var(--color-panel-2)",
-          }}
-        >
-          <span
-            className="w-10 font-mono text-[13px] font-bold"
-            style={{ color: s.on ? "var(--color-yc)" : "var(--color-ink-2)" }}
-          >
-            {s.y}
-          </span>
-          <span className="font-mono text-[11px] text-[var(--color-ink-3)]">get</span>
-          <span
-            className="font-mono text-[13px] font-semibold"
-            style={{ color: s.on ? "var(--color-yc-deep)" : "var(--color-ink)" }}
-          >
-            {s.t}
-          </span>
-          <span className="hidden font-sans text-[12px] text-[var(--color-ink-2)] sm:inline">
-            — {s.d}
-          </span>
-          {s.on && (
-            <span className="ml-auto rounded-full bg-[var(--color-yc)] px-2 py-0.5 font-mono text-[9px] font-bold text-white">
-              OURS
-            </span>
-          )}
-        </div>
-      ))}
-    </div>
-  );
-}
-
 export default function Page() {
   return (
     <AetherProvider>
       {/* announcement bar — stolen from the OrangeSlice look */}
       <div className="w-full border-b border-[var(--color-line)] bg-[var(--color-panel)]">
-        <div className="mx-auto flex max-w-[1240px] items-center justify-center gap-2 px-5 py-1.5 text-center font-sans text-[12.5px] text-[var(--color-ink-2)]">
+        <div className="mx-auto flex max-w-[1240px] items-center justify-center gap-2 px-6 py-1.5 text-center font-sans text-[12.5px] text-[var(--color-ink-2)]">
           <span className="h-1.5 w-1.5 rounded-full bg-[var(--color-yc)]" />
           On the tracked job, agents now pick OrangeSlice{" "}
           <span className="font-semibold text-[var(--color-ink)]">71%</span> of the time — up from 8%
           <span className="text-[var(--color-yc-deep)]">→</span>
         </div>
       </div>
-      <StatusRail />
-      <main className="mx-auto w-full max-w-[1240px] flex-1 px-5 pb-24">
-        {/* HERO */}
-        <section className="relative mt-8 overflow-hidden rounded-2xl border border-[var(--color-line)] bg-[var(--color-panel)] p-6">
-          <div aria-hidden className="grid-floor pointer-events-none absolute inset-0" />
-          <div className="relative grid gap-6 lg:grid-cols-[1fr_360px]">
-            <div className="flex flex-col">
-              <span className="eyebrow">OrangeSlice · your agent-facing footprint, live</span>
-              <h1 className="mt-3 max-w-[600px] font-display text-[44px] font-semibold leading-[1.03] tracking-[-0.02em] text-[var(--color-ink)]">
-                When an agent does a job you sell,{" "}
-                <span className="text-[var(--color-yc)]">we make the agent pick OrangeSlice.</span>
-              </h1>
-              <p className="mt-4 max-w-[520px] font-sans text-[15px] leading-relaxed text-[var(--color-ink-2)]">
-                Agents are becoming your buyers. This is how often one discovers and{" "}
-                <em>uses</em> OrangeSlice to do the job — and the engine that raises it.
-              </p>
-              <div className="mt-6">
-                <AaoArc />
-              </div>
-              <div className="mt-auto flex flex-wrap items-center gap-2 pt-6 font-mono text-[11px] text-[var(--color-ink-2)]">
-                <span className="rounded bg-[var(--color-panel-2)] px-2 py-1">you: OrangeSlice · YC&nbsp;S25</span>
-                <span className="rounded bg-[var(--color-panel-2)] px-2 py-1">
-                  job tracked: find high-intent buyers &amp; start outreach
-                </span>
-              </div>
-            </div>
 
-            <div className="rounded-xl border border-[var(--color-line)] bg-white p-5">
-              <UsageGauge />
-            </div>
+      <StatusRail />
+
+      <main className="mx-auto w-full max-w-[1240px] flex-1 px-6 pb-24">
+        <LandingHero />
+
+        {/* THE DEMO — command + table */}
+        <section id="demo" className="scroll-mt-20">
+          <DemoConsole />
+        </section>
+
+        {/* THE RESULT — gauge */}
+        <section className="mt-10 grid items-center gap-6 rounded-2xl border border-[var(--color-line)] bg-white p-8 lg:grid-cols-[360px_1fr]">
+          <UsageGauge />
+          <div>
+            <h2 className="font-display text-[26px] font-semibold tracking-tight text-[var(--color-ink)]">
+              One number that moves real agent behavior.
+            </h2>
+            <p className="mt-3 max-w-[520px] font-sans text-[15px] leading-relaxed text-[var(--color-ink-2)]">
+              Usage rate is the share of agent runs that pick <em>and</em> call OrangeSlice for the
+              job — measured on held-out phrasings, on two models, with a competitor held flat as a
+              control. Hit <span className="font-medium text-[var(--color-ink)]">Run wind tunnel</span>{" "}
+              and watch it climb as the footprint is rewritten.
+            </p>
           </div>
         </section>
 
         {/* THE ALGORITHM */}
-        <section className="mt-10">
+        <section id="algorithm" className="mt-10 scroll-mt-20">
           <Panel label="The algorithm" hint="the closed loop, end to end" live>
             <Pipeline />
           </Panel>
         </section>
 
         {/* THE RECOMMENDATION */}
-        <section className="mt-10">
+        <section id="recommendation" className="mt-10 scroll-mt-20">
           <Panel label="The recommendation" hint="what the engine changes on your door">
             <ToolRecommendation />
           </Panel>
@@ -137,7 +89,7 @@ export default function Page() {
         </section>
 
         {/* PROOF: CLIMB + FUNNEL */}
-        <section className="mt-10 grid items-start gap-6 lg:grid-cols-2">
+        <section id="proof" className="mt-10 grid items-start gap-6 scroll-mt-20 lg:grid-cols-2">
           <Panel label="Proof" hint="usage over versions, two models">
             <ClimbChart />
           </Panel>
@@ -154,7 +106,7 @@ export default function Page() {
         </section>
 
         {/* HONEST FOOTER */}
-        <footer className="mt-8 rounded-xl border border-dashed border-[var(--color-line-2)] bg-[var(--color-panel)] px-5 py-4">
+        <footer className="mt-8 rounded-xl border border-dashed border-[var(--color-line-2)] bg-[var(--color-panel)] px-6 py-4">
           <p className="font-sans text-[12.5px] leading-relaxed text-[var(--color-ink-2)]">
             <span className="font-semibold text-[var(--color-ink)]">Calibrated honesty:</span>{" "}
             We control the retrieval surface so it&apos;s reproducible on camera. In production this
@@ -162,8 +114,8 @@ export default function Page() {
             we never touch your live site, and every number here is computed from runs, never hand-set.
           </p>
           <p className="mt-2 font-mono text-[10.5px] text-[var(--color-ink-3)]">
-            ◷ frontend running on a simulated wind tunnel · swaps to Arav&apos;s live Convex engine
-            with no component changes (schema §8).
+            ◷ frontend running on a simulated wind tunnel · swaps to live Convex with no component
+            changes (schema §8).
           </p>
         </footer>
       </main>
