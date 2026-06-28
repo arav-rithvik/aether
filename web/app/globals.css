@@ -1,0 +1,129 @@
+@import "tailwindcss";
+
+/* ============================================================
+   AETHER — design tokens
+   Concept: white ink-on-paper scientific instrument.
+   One signal color = YC orange. Human-view = cool gray.
+   ============================================================ */
+@theme {
+  /* surfaces — clean white, cool-neutral (deliberately NOT cream) */
+  --color-paper:    #FFFFFF;
+  --color-panel:    #FBFBFA;
+  --color-panel-2:  #F4F4F2;
+  --color-line:     #ECECEA;
+  --color-line-2:   #DCDBD7;
+
+  /* ink */
+  --color-ink:    #14110D;
+  --color-ink-2:  #57534B;
+  --color-ink-3:  #8C887F;
+
+  /* THE signal — YC orange */
+  --color-yc:      #FF6600;
+  --color-yc-deep: #E25500;
+  --color-yc-soft: #FFE9D6;
+  --color-yc-wash: #FFF4EC;
+
+  /* the other wavelength: control / competitor / human-view */
+  --color-steel:   #8A98AD;
+  --color-steel-2: #C3CAD6;
+  --color-diy:     #BCB6AB; /* "do it yourself" — recedes */
+
+  /* states (used sparingly) */
+  --color-good: #0E9F6E;
+  --color-bad:  #D64545;
+
+  --font-display: var(--font-geist), ui-sans-serif, system-ui, sans-serif;
+  --font-sans:    var(--font-geist), ui-sans-serif, system-ui, sans-serif;
+  --font-mono:    var(--font-geist-mono), ui-monospace, "SF Mono", monospace;
+
+  --radius: 14px;
+}
+
+:root { color-scheme: light; }
+
+* { border-color: var(--color-line); }
+
+html, body {
+  background:
+    radial-gradient(120% 80% at 100% 0%, var(--color-yc-wash) 0%, transparent 42%),
+    var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* faint engineering grid behind everything — the "wind tunnel" floor */
+.grid-floor {
+  background-image:
+    linear-gradient(to right, var(--color-line) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--color-line) 1px, transparent 1px);
+  background-size: 38px 38px;
+  -webkit-mask-image: radial-gradient(120% 90% at 50% 0%, #000 30%, transparent 85%);
+          mask-image: radial-gradient(120% 90% at 50% 0%, #000 30%, transparent 85%);
+}
+
+/* mono numerals: tabular so the gauge never jitters */
+.tnum { font-variant-numeric: tabular-nums; font-feature-settings: "tnum" 1; }
+
+/* eyebrow / instrument label */
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-ink-2);
+}
+
+.panel {
+  background: var(--color-panel);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius);
+}
+
+.hairline { border-color: var(--color-line-2); }
+
+/* scanning shimmer for "live" instruments */
+@keyframes sweep {
+  0%   { transform: translateX(-110%); }
+  100% { transform: translateX(110%); }
+}
+.sweep::after {
+  content: "";
+  position: absolute; inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(255,102,0,0.10), transparent);
+  animation: sweep 2.6s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%      { opacity: 0.35; transform: scale(0.78); }
+}
+.live-dot { animation: pulse-dot 1.6s ease-in-out infinite; }
+
+@keyframes fadein {
+  from { opacity: 0; transform: translateY(-4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+::selection { background: var(--color-yc); color: #fff; }
+
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-thumb { background: var(--color-line-2); border-radius: 99px; }
+::-webkit-scrollbar-track { background: transparent; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-yc);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
