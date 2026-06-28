@@ -1,0 +1,115 @@
+"use client";
+import { useEffect } from "react";
+import { animate, useMotionValue, useTransform, motion } from "framer-motion";
+import { scoreOf } from "@/lib/useAether";
+import { useAether } from "@/lib/useAether";
+import { MODELS, ModelId } from "@/lib/schema";
+
+// 270° arc gauge. The headline instrument: usage rate, live.
+const R = 130;
+const STROKE = 18;
+const CIRC = 2 * Math.PI * R;
+const ARC = 0.75; // 270 of 360
+const GAP = (1 - ARC) * CIRC;
+
+function Arc({ value, color, width }: { value: number; color: string; width: number }) {
+  // value 0..1 → dash over the 270° arc
+  const dash = useMotionValue(0);
+  useEffect(() => {
+    const controls = animate(dash, value * ARC * CIRC, {
+      duration: 1.1,
+      ease: [0.22, 1, 0.36, 1],
+    });
+    return controls.stop;
+  }, [value, dash]);
+  const strokeDasharray = useTransform(dash, (d) => `${d} ${CIRC}`);
+  return (
+    <motion.circle
+      cx="0"
+      cy="0"
+      r={R}
+      fill="none"
+      stroke={color}
+      strokeWidth={width}
+      strokeLinecap="round"
+      style={{ strokeDasharray }}
+      strokeDashoffset={0}
+    />
+  );
+}
+
+export function UsageGauge() {
+  const { version, model, setModel } = useAether();
+  const rate = scoreOf(model, version).usageRate;
+  const other: ModelId = model === "gpt" ? "claude" : "gpt";
+  const otherRate = scoreOf(other, version).usageRate;
+
+  // animated big number
+  const num = useMotionValue(0);
+  useEffect(() => {
+    const c = animate(num, rate * 100, { duration: 1.1, ease: [0.22, 1, 0.36, 1] });
+    return c.stop;
+  }, [rate, num]);
+  const pct = useTransform(num, (n) => Math.round(n).toString());
+
+  return (
+    <div className="flex flex-col items-center">
+      <div className="flex w-full items-center justify-between">
+        <span className="eyebrow">Usage rate</span>
+        <div className="flex items-center gap-1 rounded-full border border-[var(--color-line)] bg-white p-0.5">
+          {MODELS.map((m) => (
+            <button
+              key={m.id}
+              onClick={() => setModel(m.id)}
+              className="rounded-full px-3 py-1 font-mono text-[11px] transition-colors"
+              style={{
+                background: model === m.id ? "var(--color-yc)" : "transparent",
+                color: model === m.id ? "#fff" : "var(--color-ink-2)",
+              }}
+            >
+              {m.label}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <div className="relative mt-2">
+        <svg width={2 * R + STROKE + 24} height={2 * R + STROKE + 24} viewBox={`${-R - STROKE / 2 - 12} ${-R - STROKE / 2 - 12} ${2 * R + STROKE + 24} ${2 * R + STROKE + 24}`}>
+          {/* rotate so the 270° arc opens at the bottom */}
+          <g transform="rotate(135)">
+            {/* track */}
+            <circle
+              cx="0"
+              cy="0"
+              r={R}
+              fill="none"
+              stroke="var(--color-line)"
+              strokeWidth={STROKE}
+              strokeLinecap="round"
+              strokeDasharray={`${ARC * CIRC} ${CIRC}`}
+            />
+            {/* faint ghost of the other model */}
+            <Arc value={otherRate} color="var(--color-steel-2)" width={6} />
+            {/* the signal */}
+            <Arc value={rate} color="var(--color-yc)" width={STROKE} />
+          </g>
+        </svg>
+
+        <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center">
+          <div className="flex items-start">
+            <motion.span className="tnum font-display text-[84px] font-semibold leading-none text-[var(--color-ink)]">
+              {pct}
+            </motion.span>
+            <span className="mt-3 font-display text-3xl font-medium text-[var(--color-yc)]">%</span>
+          </div>
+          <span className="eyebrow mt-1">of agents used OrangeSlice</span>
+        </div>
+      </div>
+
+      <div className="-mt-6 flex items-center gap-2 font-mono text-[11px] text-[var(--color-ink-3)]">
+        <span className="h-2 w-2 rounded-full" style={{ background: "var(--color-steel-2)" }} />
+        {MODELS.find((m) => m.id === other)?.label} {Math.round(otherRate * 100)}% · same job, second model
+      </div>
+    </div>
+  );
+}
