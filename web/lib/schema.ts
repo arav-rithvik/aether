@@ -91,9 +91,9 @@ export interface Score {
   n: number;
 }
 
-export const MODELS: { id: ModelId; label: string; vendor: string }[] = [
-  { id: "gpt", label: "GPT-5", vendor: "OpenAI" },
-  { id: "claude", label: "Claude", vendor: "Anthropic" },
+export const MODELS: { id: ModelId; label: string; vendor: string; soon?: boolean }[] = [
+  { id: "gpt", label: "OpenAI", vendor: "OpenAI" },
+  { id: "claude", label: "Claude", vendor: "Anthropic", soon: true },
 ];
 
 export const JOB = "find high-intent buyers and start outreach";

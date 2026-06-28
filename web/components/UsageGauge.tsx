@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { animate, useMotionValue, useTransform, motion } from "framer-motion";
 import { scoreOf } from "@/lib/useAether";
 import { useAether } from "@/lib/useAether";
-import { MODELS, ModelId } from "@/lib/schema";
+import { MODELS } from "@/lib/schema";
 
 // 270° arc gauge. The headline instrument: usage rate, live.
 const R = 130;
@@ -41,8 +41,6 @@ function Arc({ value, color, width }: { value: number; color: string; width: num
 export function UsageGauge() {
   const { version, model, setModel } = useAether();
   const rate = scoreOf(model, version).usageRate;
-  const other: ModelId = model === "gpt" ? "claude" : "gpt";
-  const otherRate = scoreOf(other, version).usageRate;
 
   // animated big number — plain state span (no motion.span, which rendered gray)
   const [disp, setDisp] = useState(0);
@@ -63,14 +61,17 @@ export function UsageGauge() {
           {MODELS.map((m) => (
             <button
               key={m.id}
-              onClick={() => setModel(m.id)}
-              className="rounded-full px-3 py-1 font-mono text-[11px] transition-colors"
+              onClick={() => !m.soon && setModel(m.id)}
+              disabled={m.soon}
+              title={m.soon ? "coming soon" : undefined}
+              className="rounded-full px-3 py-1 font-mono text-[11px] transition-colors disabled:cursor-not-allowed"
               style={{
                 background: model === m.id ? "var(--color-yc)" : "transparent",
-                color: model === m.id ? "#fff" : "var(--color-ink-2)",
+                color: model === m.id ? "#fff" : m.soon ? "var(--color-ink-3)" : "var(--color-ink-2)",
               }}
             >
               {m.label}
+              {m.soon ? " ·soon" : ""}
             </button>
           ))}
         </div>
@@ -91,8 +92,6 @@ export function UsageGauge() {
               strokeLinecap="round"
               strokeDasharray={`${ARC * CIRC} ${CIRC}`}
             />
-            {/* faint ghost of the other model */}
-            <Arc value={otherRate} color="var(--color-steel-2)" width={6} />
             {/* the signal */}
             <Arc value={rate} color="var(--color-yc)" width={STROKE} />
           </g>
@@ -115,7 +114,7 @@ export function UsageGauge() {
 
       <div className="mt-3 flex items-center gap-2 font-mono text-[11px] text-[var(--color-ink-3)]">
         <span className="h-2 w-2 rounded-full" style={{ background: "var(--color-steel-2)" }} />
-        {MODELS.find((m) => m.id === other)?.label} {Math.round(otherRate * 100)}% · same job, second model
+        Claude and Cursor agents coming soon · same engine, same data
       </div>
     </div>
   );

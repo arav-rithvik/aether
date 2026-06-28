@@ -7,11 +7,12 @@ export function MathPanel() {
   const m = mathFor(model, version);
   const modelLabel = MODELS.find((x) => x.id === model)?.label;
 
+  const of = m.n || 1;
   const chain = [
-    { label: "ran", v: m.n, of: m.n, note: "agents given the job" },
-    { label: "found you", v: m.candidacy, of: m.n, note: "candidacy" },
-    { label: "chose you", v: m.selection, of: m.n, note: "selection" },
-    { label: "got leads", v: m.execution, of: m.n, note: "execution" },
+    { label: "ran", v: m.n, of, note: "agents given the job" },
+    { label: "found you", v: m.candidacy, of, note: "candidacy" },
+    { label: "recommended you", v: m.selection, of, note: "picked over rival / DIY" },
+    { label: "called your tool", v: m.called, of, note: "executed the call" },
   ];
 
   return (

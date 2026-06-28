@@ -68,15 +68,20 @@ export function LandingHero() {
     <section className="relative overflow-hidden">
       <div aria-hidden className="grid-floor pointer-events-none absolute inset-0 opacity-60" />
       <div className="relative mx-auto flex max-w-[900px] flex-col items-center px-6 pt-24 pb-10 text-center">
+        {/* category */}
+        <span className="font-display text-[18px] font-bold tracking-tight text-[var(--color-ink-2)] md:text-[20px]">
+          GEO for agentic coding
+        </span>
+
         {/* headline */}
-        <h1 className="max-w-[820px] font-display text-[64px] font-semibold leading-[0.98] tracking-[-0.03em] text-[var(--color-ink)] md:text-[76px]">
-          Make AI agents <span className="text-[var(--color-yc)]">pick you.</span>
+        <h1 className="mt-5 max-w-[820px] font-display text-[64px] font-semibold leading-[0.98] tracking-[-0.03em] text-[var(--color-ink)] md:text-[76px]">
+          Make AI agents <span className="text-[var(--color-yc)]">reach for you.</span>
         </h1>
 
         {/* subtitle */}
-        <p className="mt-6 max-w-[560px] font-sans text-[18px] leading-relaxed text-[var(--color-ink-2)]">
-          Aether measures how often AI agents discover and <em>use</em> your product to finish a job,
-          then rewrites your agent-facing footprint until they choose you over the alternatives.
+        <p className="mt-6 max-w-[580px] font-sans text-[18px] leading-relaxed text-[var(--color-ink-2)]">
+          We run real coding agents in a sandbox, observe which tools they reach for to finish a job,
+          and rewrite your agent-facing footprint until they reach for you.
         </p>
 
         {/* buttons */}

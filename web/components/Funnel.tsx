@@ -48,7 +48,7 @@ export function Funnel() {
         );
       })}
       <p className="mt-auto pt-1 font-mono text-[10px] text-[var(--color-ink-3)]">
-        n = {f.n} runs · {model === "gpt" ? "GPT-5" : "Claude"} · v{version}
+        n = {f.n} runs · OpenAI · v{version}
       </p>
     </div>
   );

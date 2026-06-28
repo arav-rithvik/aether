@@ -90,8 +90,8 @@ export function Pipeline() {
         { k: "cmd", t: `aether corpus --version ${version === 1 ? "weak" : "optimized"}` },
         { k: "ok", t: "indexed 3 docs the agent can search" },
         version === 1
-          ? { k: "out", t: 'orangeslice.com — "a spreadsheet for sales teams"' }
-          : { k: "out", t: "orangeslice.com/api — find buyers + start outreach" },
+          ? { k: "out", t: 'orangeslice.com: "a spreadsheet for sales teams"' }
+          : { k: "out", t: "orangeslice.com/api: find buyers + start outreach" },
       ],
       sections: [
         { h: "What happens", body: "The agent searches a corpus we control instead of the live web, so the test is reproducible across runs and on camera." },
@@ -106,8 +106,8 @@ export function Pipeline() {
       terminal: [
         { k: "cmd", t: "aether run --models gpt5,claude --repeats 10" },
         { k: "dim", t: "running 100 agents..." },
-        { k: "out", t: "run 0042  GPT-5   chose: do_it_yourself" },
-        { k: "ok", t: "run 0043  Claude  chose: orangeslice" },
+        { k: "out", t: "run 0042  OpenAI  chose: do_it_yourself" },
+        { k: "ok", t: "run 0043  OpenAI  chose: orangeslice" },
         { k: "ok", t: "100 runs complete" },
       ],
       sections: [

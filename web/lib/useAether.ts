@@ -76,11 +76,12 @@ export function mathFor(model: ModelId, version: number) {
   const n = cell.length;
   const used = cell.filter((r) => r.chosenTool === "orangeslice" && r.returnedUsableData).length;
   const candidacy = cell.filter((r) => r.failureTag !== "not_found").length;
-  const selection = cell.filter((r) => r.chosenTool === "orangeslice").length;
-  const execution = used;
+  const selection = cell.filter((r) => r.chosenTool === "orangeslice").length; // recommended you
+  const called = cell.filter((r) => r.calledTool).length; // tried to call your tool
+  const execution = used; // call ran + returned usable data
   const competitor = cell.filter((r) => r.chosenTool === "leadgenius").length;
   const diy = cell.filter((r) => r.chosenTool === "self").length;
-  return { n, used, candidacy, selection, execution, competitor, diy, rate: n ? used / n : 0 };
+  return { n, used, candidacy, selection, called, execution, competitor, diy, rate: n ? used / n : 0 };
 }
 
 // aggregate stats on the wind engine itself

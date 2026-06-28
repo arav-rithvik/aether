@@ -5,7 +5,8 @@ import { FAILURE_LABEL, Run, TOOL_LABEL } from "@/lib/schema";
 import { SPONSORS } from "@/lib/mockData";
 import { OrangeSliceMark } from "./OrangeSliceMark";
 
-// interleave the two models so a test feels like 100 mixed runs
+// A test fires 100 runs: every phrasing, repeated, across models. OpenAI is
+// live today; Claude rows preview how it runs once that API is wired.
 function testBatch(version: number): Run[] {
   const g = runsFor("gpt", version);
   const c = runsFor("claude", version);
@@ -66,7 +67,7 @@ export function DemoConsole() {
             Test: does an agent pick OrangeSlice?
           </div>
           <div className="truncate font-mono text-[11.5px] text-[var(--color-ink-3)]">
-            job: find high-intent buyers and start outreach · 100 runs · Claude + GPT-5
+            job: find high-intent buyers and start outreach · OpenAI agents · Claude and Cursor coming soon
           </div>
         </div>
 
@@ -163,7 +164,7 @@ export function DemoConsole() {
               <span className="font-mono text-[11px] text-[var(--color-ink-3)]">{shown.length - i}</span>
               <span className="truncate font-sans text-[var(--color-ink)]">{r.phrasing}</span>
               <span className="font-mono text-[11px] text-[var(--color-ink-2)]">
-                {r.model === "gpt" ? "GPT-5" : "Claude"}
+                {r.model === "gpt" ? "OpenAI" : "Claude"}
               </span>
               <span className="flex items-center gap-1.5">
                 <span

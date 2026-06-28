@@ -10,7 +10,7 @@ export function EngineStats() {
     { v: s.totalRuns, label: "agent runs", sub: `${s.perCell}× per cell` },
     { v: s.agentCalls, label: "LLM calls", sub: "runs + tagger + rewrite" },
     { v: s.phrasings, label: "phrasings", sub: `${s.trainN} train · ${s.testN} held-out` },
-    { v: s.models, label: "models", sub: "GPT-5 · Claude" },
+    { v: "1", label: "live model", sub: "OpenAI · Claude soon" },
     { v: 3, label: "tools on table", sub: "you · rival · DIY" },
   ];
 
@@ -30,7 +30,7 @@ export function EngineStats() {
       <div className="col-span-2 flex items-center gap-2 rounded-lg border border-dashed border-[var(--color-line-2)] px-3 py-2 sm:col-span-3">
         <span className="live-dot inline-block h-1.5 w-1.5 rounded-full bg-[var(--color-yc)]" />
         <span className="font-mono text-[11px] text-[var(--color-ink-2)]">
-          currently showing iteration {version} — measured on held-out phrasings the optimizer never saw.
+          currently showing iteration {version}, measured on held-out phrasings the optimizer never saw.
         </span>
       </div>
     </div>

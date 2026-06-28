@@ -17,9 +17,17 @@ function LiveData() {
   const runs = useQuery(qRuns) as Record<string, unknown>[] | undefined;
 
   useEffect(() => {
-    if (scores && runs && runs.length) {
+    // only swap to live when the deployment actually has OUR seeded shape,
+    // otherwise keep the mock (empty/foreign data must never zero the dashboard)
+    const valid =
+      Array.isArray(runs) &&
+      runs.length >= 50 &&
+      runs.some((r) => r.model === "gpt" && typeof r.descriptionVersion === "number") &&
+      Array.isArray(scores) &&
+      scores.length >= 1;
+    if (valid) {
       setLive({
-        runs: runs.map((r) => ({ ...r, id: r._id })) as never,
+        runs: (runs as Record<string, unknown>[]).map((r) => ({ ...r, id: r._id })) as never,
         scores: (scores as Record<string, unknown>[]).map((s) => ({ ...s, id: s._id })) as never,
       });
     }

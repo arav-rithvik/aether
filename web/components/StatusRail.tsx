@@ -2,8 +2,9 @@
 import { OrangeSliceMark } from "./OrangeSliceMark";
 
 const LINKS = [
+  { label: "Observability", href: "#observability" },
+  { label: "Agents", href: "#agents" },
   { label: "How it works", href: "#algorithm" },
-  { label: "The recommendation", href: "#recommendation" },
   { label: "Proof", href: "#proof" },
 ];
 

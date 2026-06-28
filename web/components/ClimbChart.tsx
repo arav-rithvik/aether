@@ -34,8 +34,9 @@ export function ClimbChart() {
   return (
     <div className="flex h-full flex-col">
       <p className="font-sans text-[13px] text-[var(--color-ink-2)]">
-        Same job, same held-out phrasings. Only your footprint changed —{" "}
-        <span className="text-[var(--color-ink)]">usage climbs on both models; the competitor stays flat as a control.</span>
+        Same job, same held-out phrasings. Only your footprint changed.{" "}
+        <span className="text-[var(--color-ink)]">Usage climbs for OpenAI agents while the competitor stays flat as a control.</span>{" "}
+        Claude and Cursor agents are next on the same engine.
       </p>
 
       <svg viewBox={`0 0 ${W} ${H}`} className="mt-2 w-full" style={{ maxHeight: 170 }}>
@@ -82,8 +83,8 @@ export function ClimbChart() {
       </svg>
 
       <div className="mt-auto flex flex-wrap items-center gap-x-4 gap-y-1 pt-2 font-mono text-[10px] text-[var(--color-ink-3)]">
-        <Legend color="var(--color-yc)" label={model === "gpt" ? "GPT-5" : "Claude"} />
-        <Legend color="#FFB37A" label={other === "gpt" ? "GPT-5" : "Claude"} />
+        <Legend color="var(--color-yc)" label="OpenAI (live)" />
+        <Legend color="#FFB37A" label="Claude (coming soon)" />
         <Legend color="var(--color-steel)" label="Competitor (control)" dash />
       </div>
     </div>

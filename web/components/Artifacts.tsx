@@ -10,8 +10,8 @@ export function Artifacts() {
     <div className="flex flex-col gap-2.5">
       <p className="font-sans text-[13px] text-[var(--color-ink-2)]">
         What the agent&apos;s search tool returns for the job. These are the documents Aether{" "}
-        <span className="text-[var(--color-ink)]">writes and controls on your behalf</span> — your
-        footprint as the agent sees it.
+        <span className="text-[var(--color-ink)]">writes and controls on your behalf</span>. This is
+        your footprint as the agent sees it.
       </p>
       <div className="flex items-center gap-2">
         <span className="font-mono text-[11px] text-[var(--color-ink-3)]">corpus:</span>

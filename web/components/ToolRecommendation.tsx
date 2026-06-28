@@ -34,7 +34,7 @@ export function ToolRecommendation() {
         </span>
         <p className="font-sans text-[13px] leading-relaxed text-[var(--color-ink-2)]">
           No rejection reason is worth fixing anymore. Your current tool description is the
-          recommendation — agents pick you {before}% of the time.
+          recommendation. Agents pick you {before}% of the time.
         </p>
         <button
           onClick={() => setVersion(1)}
@@ -80,7 +80,7 @@ export function ToolRecommendation() {
           ))}
         </div>
         <p className="mt-2 border-t border-[var(--color-line)] pt-2 font-mono text-[10px] text-[var(--color-ink-3)]">
-          truthful claims only — no “always use me” injection (tool-poisoning = instant DQ).
+          truthful claims only. No “always use me” injection (tool-poisoning is an instant DQ).
         </p>
       </div>
 
