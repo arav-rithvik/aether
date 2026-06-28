@@ -60,6 +60,15 @@ function AaoArc() {
 export default function Page() {
   return (
     <AetherProvider>
+      {/* announcement bar — stolen from the OrangeSlice look */}
+      <div className="w-full border-b border-[var(--color-line)] bg-[var(--color-panel)]">
+        <div className="mx-auto flex max-w-[1240px] items-center justify-center gap-2 px-5 py-1.5 text-center font-sans text-[12.5px] text-[var(--color-ink-2)]">
+          <span className="h-1.5 w-1.5 rounded-full bg-[var(--color-yc)]" />
+          On the tracked job, agents now pick OrangeSlice{" "}
+          <span className="font-semibold text-[var(--color-ink)]">71%</span> of the time — up from 8%
+          <span className="text-[var(--color-yc-deep)]">→</span>
+        </div>
+      </div>
       <StatusRail />
       <main className="mx-auto w-full max-w-[1240px] flex-1 px-5 pb-24">
         {/* HERO */}
@@ -68,7 +77,7 @@ export default function Page() {
           <div className="relative grid gap-6 lg:grid-cols-[1fr_360px]">
             <div className="flex flex-col">
               <span className="eyebrow">OrangeSlice · your agent-facing footprint, live</span>
-              <h1 className="mt-3 max-w-[580px] font-display text-[40px] font-semibold leading-[1.04] tracking-tight text-[var(--color-ink)]">
+              <h1 className="mt-3 max-w-[600px] font-display text-[44px] font-semibold leading-[1.03] tracking-[-0.02em] text-[var(--color-ink)]">
                 When an agent does a job you sell,{" "}
                 <span className="text-[var(--color-yc)]">we make the agent pick OrangeSlice.</span>
               </h1>
