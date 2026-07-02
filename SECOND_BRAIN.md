@@ -241,3 +241,23 @@ The company = a swarm of agents that replaces a human SEO/GEO agency. **Two kind
 **The wind-tunnel analogy (use in the pitch):** you don't fly the plane through a real storm — you control the airflow in a tunnel to test the wing. **Real plane (the agent), controlled air (the corpus).**
 
 **On-stage honesty line:** *"We control the retrieval surface so it's reproducible on camera — in production it's the live web and the customer's real footprint, done over days. We're showing the mechanism, not editing OrangeSlice's live site."*
+
+---
+
+## 19. COMPETITIVE LANDSCAPE (who else is doing this)
+Two real players are building in our space, on **different layers of the same stack.**
+
+- **Morphiq (trymorphiq.com)** — a near-clone of our thesis, scoped to **developer tools + coding agents** (Cursor / Codex / Claude Code). Simulates agents on real repo tasks → optimizes docs, SDKs, CLIs, MCP schemas so the agent picks you. Live product + a public leaderboard (**Morphiq Bench**). **Same invocation layer as us; ahead of us in their lane.**
+- **Kachi (kachi.ai)** — **AEO / AI-visibility for marketers.** Makes your website read + cited by LLMs and agentic browsers; ships a dashboard of AI-agent visits + citation gaps. Real traction (419K+ AI visits analyzed; Veeam, Magna, Neuron7). **This is the GEO layer — one below us.**
+
+**The layer map (use in the pitch):**
+`SEO (rank for humans) → GEO/AEO = Kachi (get read + cited) → AAO/2AO = Morphiq (devtools) + Aether (general-task) (get used).`
+Kachi wins you a **citation**. Morphiq & Aether win you the **tool-call**.
+
+**Our lane (unclaimed):** the invocation layer for **general-task / GTM agents** — not just coding agents (Morphiq), not just citation (Kachi).
+
+**Our two defensible edges vs both:** the **DIY-arm (s_DIY)** measurement (the agent's biggest competitor is *itself*) + **causal rigor** (held-out test phrasings, a competitor held flat as control, two models). Neither competitor has claimed these.
+
+**If a judge asks "who else is doing this?":** *"Morphiq owns devtool-invocation, Kachi owns get-cited. We own agent* usage *for the rest of the economy — with causal proof and the DIY-arm."* This is validation that the category is real, not a threat to our wedge.
+
+*(Full competitor analysis PDF is kept internal — not committed here, since this repo is public. It's in the team's inboxes.)*
